@@ -1,6 +1,5 @@
 import networkx as nx
 import heapq
-
 G = nx.DiGraph()
 edges = [(1, 2, 10),
          (2, 3, 1),
@@ -26,9 +25,7 @@ edges = [(1, 2, 10),
 # I 9
 
 G.add_weighted_edges_from(edges)
-
 nx.draw(G, with_labels=True)
-
 # partial dijkstra
 def dijkstra(graph, src, dest):
 
@@ -56,8 +53,7 @@ def dijkstra(graph, src, dest):
         heapq.heappush(heap, (new_cost, neighbor))
 
   return float('inf')
-
-
+ 
 def reverse(graph):
   Gr = nx.DiGraph()
   # for node in graph.nodes():
@@ -65,20 +61,12 @@ def reverse(graph):
 
   Gr.add_edges_from((v,u,d) for u,v,d in graph.edges(data=True))
   return Gr
-
-
 GR = reverse(G)
-
-
 nx.draw(GR, with_labels=True)
-
-
 dist = {}
 isSettled = {}
 PQ = []
 parent = {}
-
-result = []
 
 for node in GR.nodes():
   dist[node] = float('inf')
@@ -88,7 +76,6 @@ for node in GR.nodes():
 dest = 4 # D vertexi destination noktamız
 heapq.heappush(PQ, (0, dest))
 dist[dest] = 0
-
 
 def ConstructPartialSPT(graph, v):
   global dist, isSettled, PQ, parent
@@ -120,48 +107,52 @@ def ConstructPartialSPT(graph, v):
         
   return float('inf')
 
-
-
 ConstructPartialSPT(GR, 5)
 print(dist)
 print(isSettled)
 print(parent)
-
 
 ConstructPartialSPT(GR, 2)
 print(dist)
 print(isSettled)
 print(parent)
 
-def LB1(cost, node):
-  return cost + dist[node] 
+def LB1(length, node):
+  return length + dist[node] 
 
+result = [{(1,2): 10,
+           (2,3): 1,
+           (3, 4): 10}]
 
 # path ler edge list olarak tutuluyor
 def LB2(new_path, threshold):
-  
+  global result
   lb2 = 0
-  for path in result: 
-    intersection = set(path).intersection(set(new_path))
-    ilength = 0
-    for v1, v2, data in intersection.items():
-      ilength += data['weight']
-    
-    path_length = 0
-    for v1, v2, data in path.items():
-      path_length += data['weight']
-    
+  for old_path in result: 
 
-    lb2 = max(ilength * (1+1/threshold) - path_length)
+    common_edges = set(old_path.keys()).intersection(set(new_path.keys()))
 
+    intersection_length = sum(old_path[e] for e in common_edges)
+    # print(intersection_length)
+    old_path_length = sum(e for e in old_path.values())
+    # print(old_path_length)
+
+    current_lb2 = intersection_length * (1+1/threshold) - old_path_length
+    lb2 = max(lb2, current_lb2)
+
+  #   if old_path in new_path:
+  #     s += result[old_path]
+
+  # print(s)
+  # ss = sum(result.values())
   return lb2
 
 
-result = [((1,2, {'weight': 10}), (2,3, {'weight': 1}), (3, 4, {'weight': 10}))]
-
-path = [(1,2, {'weight': 10}), (2,6, {'weight': 1}), (6, 7, {'weight': 1}), (7, 5, {'weight': 15}), (5, 4, {'weight': 1})]
+path = {(1,2): 10,
+        (2,6): 1,
+        (6, 7): 1,
+        (7, 5): 15,
+        (5, 4): 1}
 
 LB2(path, 0.5)
-
-
-# def Sim(path):
+# def Sim(path): 
