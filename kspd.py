@@ -76,7 +76,6 @@ for node in GR.nodes():
 dest = 4 # D vertexi destination noktamız
 heapq.heappush(PQ, (0, dest))
 dist[dest] = 0
-
 def ConstructPartialSPT(graph, v):
   global dist, isSettled, PQ, parent
 
@@ -92,9 +91,6 @@ def ConstructPartialSPT(graph, v):
     if not isSettled[node]:
       isSettled[node] = True
 
-      if node == v:
-        return dist[v]      
-      
       for neighbor, data in graph[node].items():
 
         if not isSettled[neighbor]:        
@@ -104,27 +100,31 @@ def ConstructPartialSPT(graph, v):
             dist[neighbor] = new_cost
             parent[neighbor] = node
             heapq.heappush(PQ, (new_cost, neighbor))
-        
-  return float('inf')
 
+      if node == v:
+        return dist[v]      
+      
+  return float('inf')
 ConstructPartialSPT(GR, 5)
 print(dist)
 print(isSettled)
 print(parent)
-
 ConstructPartialSPT(GR, 2)
 print(dist)
 print(isSettled)
 print(parent)
-
+ConstructPartialSPT(GR, 1)
+print(dist)
+print(isSettled)
+print(parent)
 def LB1(length, node):
   return length + dist[node] 
 
 result = [{(1,2): 10,
            (2,3): 1,
            (3, 4): 10}]
-
-# path ler edge list olarak tutuluyor
+# path dict olarak tutuluyor (edgelerin listesi)
+# result dict arrayi olarak tutuluyor
 def LB2(new_path, threshold):
   global result
   lb2 = 0
@@ -155,4 +155,26 @@ path = {(1,2): 10,
         (5, 4): 1}
 
 LB2(path, 0.5)
-# def Sim(path): 
+def lb(LB1, LB2):
+  return max(LB1, LB2)
+def Sim(new_path, threshold):
+  flag = True
+
+  for old_path in result:
+    common_edges = set(new_path.keys()).intersection(set(old_path.keys()))
+    intersection_length = sum(new_path[e] for e in common_edges)
+
+    union_edges = set(new_path.keys()).union(set(old_path.keys()))
+    union_length = sum(new_path[e] for e in union_edges if e in new_path)
+    union_length += sum(old_path[e] for e in union_edges if e in old_path)
+    union_length -= intersection_length
+
+
+    similarity = intersection_length / union_length
+
+    if similarity >= threshold:
+      flag = False
+      break  
+
+  return flag
+Sim(path, 0.5)
