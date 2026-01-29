@@ -26,34 +26,6 @@ edges = [(1, 2, 10),
 
 G.add_weighted_edges_from(edges)
 nx.draw(G, with_labels=True)
-# partial dijkstra
-def dijkstra(graph, src, dest):
-
-  if src ==  dest:
-    return 0
-
-  heap = [(0, src)]
-  shortest_path = {node: float('inf') for node in graph}
-  shortest_path[src] = 0
-
-  while heap:
-    cost, node = heapq.heappop(heap)
-    if node == dest:
-      # print(shortest_path)
-      return shortest_path[dest]
-
-    if cost > shortest_path[node]:
-      continue
-
-    for neighbor, data in graph[node].items():
-      new_cost = cost + data['weight']
-
-      if new_cost < shortest_path[neighbor]:
-        shortest_path[neighbor] = new_cost
-        heapq.heappush(heap, (new_cost, neighbor))
-
-  return float('inf')
- 
 def reverse(graph):
   Gr = nx.DiGraph()
   # for node in graph.nodes():
@@ -63,29 +35,84 @@ def reverse(graph):
   return Gr
 GR = reverse(G)
 nx.draw(GR, with_labels=True)
-dist = {}
-isSettled = {}
-PQ = []
-parent = {}
 
-for node in GR.nodes():
-  dist[node] = float('inf')
-  isSettled[node] = False
-  parent[node] = None
 
-dest = 4 # D vertexi destination noktamız
-heapq.heappush(PQ, (0, dest))
-dist[dest] = 0
+
+class Path:
+  def __init__(self):
+    self.route = []
+    self.edges = {}
+    self.length = 0
+    self.lb = 0
+    self.cls = None
+
+  def calculate_lb(LB1, LB2):
+    return max(LB1, LB2)
+
+  def LB1(self, node, distances):
+    return self.length + distances[node] 
+
+  # result dict arrayi olarak tutuluyor
+  def LB2(self, threshold, result):
+    lb2 = 0
+
+    for old_path in result: 
+
+      old_path_edges = old_path.edges
+
+      common_edges = set(old_path_edges.keys()).intersection(set(self.edges.keys()))
+
+      intersection_length = sum(old_path_edges[e] for e in common_edges)
+
+      current_lb2 = intersection_length * (1+1/threshold) - old_path.length
+      lb2 = max(lb2, current_lb2)
+
+    return lb2
+
+  
+  def Sim(self, threshold, result):
+    flag = True
+
+    for old_path in result: 
+      old_path_edges = old_path.edges
+
+      common_edges = set(old_path_edges.keys()).intersection(set(self.edges.keys()))
+      intersection_length = sum(old_path_edges[e] for e in common_edges)
+
+      # union_edges = set(new_path_edges.keys()).union(set(old_path_edges.keys()))
+      # union_length = sum(new_path_edges[e] for e in union_edges if e in new_path_edges)
+      # union_length += sum(old_path_edges[e] for e in union_edges if e in old_path_edges)
+      # union_length -= intersection_length
+      union_length = self.length + old_path.length - intersection_length
+
+      similarity = intersection_length / union_length
+
+      if similarity >= threshold:
+        flag = False
+        break  
+
+    return flag
+  
+def tail(self):
+  return self.route[-1] if self.route else None
+
+def head(self):
+  return self.route[0] if self.route else None
+
+def contains(self, vertex):
+  return vertex in self.route
+
+
 def ConstructPartialSPT(graph, v):
-  global dist, isSettled, PQ, parent
+  global distances, isSettled, PQ, parent
 
   if isSettled[v]:
-    return dist[v]
+    return distances[v]
 
   while PQ:
     cost, node = heapq.heappop(PQ)
 
-    if cost > dist[node]:
+    if cost > distances[node]:
       continue
 
     if not isSettled[node]:
@@ -96,85 +123,80 @@ def ConstructPartialSPT(graph, v):
         if not isSettled[neighbor]:        
           new_cost = cost + data['weight']
 
-          if new_cost < dist[neighbor]:
-            dist[neighbor] = new_cost
+          if new_cost < distances[neighbor]:
+            distances[neighbor] = new_cost
             parent[neighbor] = node
             heapq.heappush(PQ, (new_cost, neighbor))
 
       if node == v:
-        return dist[v]      
+        return distances[v]      
       
   return float('inf')
-ConstructPartialSPT(GR, 5)
-print(dist)
-print(isSettled)
-print(parent)
-ConstructPartialSPT(GR, 2)
-print(dist)
-print(isSettled)
-print(parent)
-ConstructPartialSPT(GR, 1)
-print(dist)
-print(isSettled)
-print(parent)
-def LB1(length, node):
-  return length + dist[node] 
-
-result = [{(1,2): 10,
-           (2,3): 1,
-           (3, 4): 10}]
-# path dict olarak tutuluyor (edgelerin listesi)
-# result dict arrayi olarak tutuluyor
-def LB2(new_path, threshold):
-  global result
-  lb2 = 0
-  for old_path in result: 
-
-    common_edges = set(old_path.keys()).intersection(set(new_path.keys()))
-
-    intersection_length = sum(old_path[e] for e in common_edges)
-    # print(intersection_length)
-    old_path_length = sum(e for e in old_path.values())
-    # print(old_path_length)
-
-    current_lb2 = intersection_length * (1+1/threshold) - old_path_length
-    lb2 = max(lb2, current_lb2)
-
-  #   if old_path in new_path:
-  #     s += result[old_path]
-
-  # print(s)
-  # ss = sum(result.values())
-  return lb2
 
 
-path = {(1,2): 10,
-        (2,6): 1,
-        (6, 7): 1,
-        (7, 5): 15,
-        (5, 4): 1}
-
-LB2(path, 0.5)
-def lb(LB1, LB2):
-  return max(LB1, LB2)
-def Sim(new_path, threshold):
-  flag = True
-
-  for old_path in result:
-    common_edges = set(new_path.keys()).intersection(set(old_path.keys()))
-    intersection_length = sum(new_path[e] for e in common_edges)
-
-    union_edges = set(new_path.keys()).union(set(old_path.keys()))
-    union_length = sum(new_path[e] for e in union_edges if e in new_path)
-    union_length += sum(old_path[e] for e in union_edges if e in old_path)
-    union_length -= intersection_length
 
 
-    similarity = intersection_length / union_length
 
-    if similarity >= threshold:
-      flag = False
-      break  
 
-  return flag
-Sim(path, 0.5)
+# path dönen dijkstra
+def dijkstra(graph, src, dest):
+
+  if src == dest:
+    return {}, 0
+
+  heap = [(0, src, [])]
+  visited = set()
+
+  while heap:
+    cost, node, path = heapq.heappop(heap)
+
+    if node in visited:
+      continue
+    visited.add(node)
+
+    if node == dest:
+      shortest_path = Path()
+
+      for i in range(len(path)):
+        if i < len(path) - 1:
+          u, v = path[i], path[i+1]
+          shortest_path.edges[(u,v)] = graph[u][v]['weight']
+          shortest_path.length += graph[u][v]['weight']
+          shortest_path.route.append(u)
+        else:
+          u, v = path[i], dest
+          shortest_path.edges[(u,v)] = graph[u][v]['weight']
+          shortest_path.length += graph[u][v]['weight']
+          shortest_path.route.append(u)
+          shortest_path.route.append(v)
+
+      return shortest_path
+
+    for neighbor, data, in graph[node].items():
+      if neighbor not in visited:
+        new_cost = cost + data['weight']
+        heapq.heappush(heap, (new_cost, neighbor, path + [node]))
+
+  return None, float('inf')
+
+
+
+
+
+distances = {}
+isSettled = {}
+PQ = []
+parent = {}
+
+for node in GR.nodes():
+  distances[node] = float('inf')
+  isSettled[node] = False
+  parent[node] = None
+
+dest = 4 # D vertexi destination noktamız
+heapq.heappush(PQ, (0, dest))
+distances[dest] = 0
+
+
+first_shortest_path = dijkstra(G, 1, 4)
+first_shortest_path.__dict__
