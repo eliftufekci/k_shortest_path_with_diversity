@@ -1,5 +1,6 @@
 import networkx as nx
 import heapq
+import pandas as pd
 
 class GraphState:
 	def __init__(self, graph_reverse, destination):
@@ -17,7 +18,6 @@ class GraphState:
 		
 		heapq.heappush(self.PQ, (0, destination))
 		self.distances[destination] = 0
-
 
 class Path:
 	def __init__(self):
@@ -61,7 +61,7 @@ class Path:
 		if not graph_state.isSettled[tail]:
 			ConstructPartialSPT(graph_state=graph_state, v=tail) 
 
-		return self.lenght + graph_state.distances[tail]
+		return self.length + graph_state.distances[tail]
 
 	def LB2(self, threshold, result_set):
 		if not result_set:
@@ -89,204 +89,218 @@ class Path:
 				if similarity > threshold:
 					return False
 		return True
-	
-	
-def ConstructPartialSPT(graph_state, v):
-	"""Incrementally construct reverse shortest path tree until vertex v is settled"""
-	if graph_state.isSettled[v]:
-		return graph_state.distances[v]
-	
-	while graph_state.PQ:
-		cost, node = heapq.heappop(graph_state.PQ)
-		
-		if cost > graph_state.distances[node]:
-			continue
-		
-		if not graph_state.isSettled[node]:
-			graph_state.isSettled[node] = True
-			
-			for neighbor, data in graph_state.graph_reverse[node].items():
-				if not graph_state.isSettled[neighbor]:
-					new_cost = cost + data['weight']
-					
-					if new_cost < graph_state.distances[neighbor]:
-						graph_state.distances[neighbor] = new_cost
-						graph_state.parent[neighbor] = node
-						heapq.heappush(graph_state.PQ, (new_cost, neighbor))
-			
-			if node == v:
-				return graph_state.distances[v]
-	
-	return float('inf')
 
+def ConstructPartialSPT(graph_state, v):
+
+    print("="*60)
+    print("ConstructPartialSPT ye geldim")
+
+    if graph_state.isSettled[v]:
+        return graph_state.distances[v]
+
+    while graph_state.PQ:
+        cost, node = heapq.heappop(graph_state.PQ)
+
+        if cost > graph_state.distances[node]:
+            continue
+
+        if not graph_state.isSettled[node]:
+            graph_state.isSettled[node] = True
+
+            for neighbor, data in graph_state.graph_reverse[node].items():
+                if not graph_state.isSettled[neighbor]:
+                    new_cost = cost + data['weight']
+
+                    if new_cost < graph_state.distances[neighbor]:
+                        graph_state.distances[neighbor] = new_cost
+                        graph_state.parent[neighbor] = node
+                        heapq.heappush(graph_state.PQ, (new_cost, neighbor))
+
+            if node == v:
+                return graph_state.distances[v]
+
+    return float('inf')
 
 def reverse(graph):
 	Gr = nx.DiGraph()
 	Gr.add_edges_from((v,u,d) for u,v,d in graph.edges(data=True))
 	return Gr
 
-
 def dijkstra(graph, src, dest):
-	if src == dest:
-		path = Path()
-		path.route = [src]
-		return path
 
-	heap = [(0, src, [])]
-	visited = set()
+    print("="*60)
+    print("dijkstra ya geldim")
 
-	while heap:
-		cost, node, path_list = heapq.heappop(heap)
-		
-		if node in visited:
-			continue
-		visited.add(node)
-		
-		if node == dest:
-			shortest_path = Path()
-			
-			for i in range(len(path_list)):
-				if i < len(path_list) - 1:
-					u, v = path_list[i], path_list[i+1]
-					shortest_path.edges[(u, v)] = graph[u][v]['weight']
-					shortest_path.length += graph[u][v]['weight']
-					shortest_path.route.append(u)
-				else:
-					u, v = path_list[i], dest
-					shortest_path.edges[(u, v)] = graph[u][v]['weight']
-					shortest_path.length += graph[u][v]['weight']
-					shortest_path.route.append(u)
-					shortest_path.route.append(v)
-			
-			shortest_path.lb = shortest_path.length
-			return shortest_path
-		
-		for neighbor, data in graph[node].items():
-			if neighbor not in visited:
-				new_cost = cost + data['weight']
-				heapq.heappush(heap, (new_cost, neighbor, path_list + [node]))
-	
-	return None
+    if src == dest:
+        path = Path()
+        path.route = [src]
+        return path
 
+    heap = [(0, src, [])]
+    visited = set()
+
+    while heap:
+        cost, node, path_list = heapq.heappop(heap)
+
+        if node in visited:
+            continue
+        visited.add(node)
+
+        if node == dest:
+            shortest_path = Path()
+
+            for i in range(len(path_list)):
+                if i < len(path_list) - 1:
+                    u, v = path_list[i], path_list[i+1]
+                    shortest_path.edges[(u, v)] = graph[u][v]['weight']
+                    shortest_path.length += graph[u][v]['weight']
+                    shortest_path.route.append(u)
+                else:
+                    u, v = path_list[i], dest
+                    shortest_path.edges[(u, v)] = graph[u][v]['weight']
+                    shortest_path.length += graph[u][v]['weight']
+                    shortest_path.route.append(u)
+                    shortest_path.route.append(v)
+
+            shortest_path.lb = shortest_path.length
+            return shortest_path
+
+        for neighbor, data in graph[node].items():
+            if neighbor not in visited:
+                new_cost = cost + data['weight']
+                heapq.heappush(heap, (new_cost, neighbor, path_list + [node]))
+
+    return None
 
 def ExtendPath(path, graph, graph_state, LQ, global_PQ, covered_vertices):
-	tail = path.tail()
 
-	if tail in LQ:
-		for p in LQ[tail]:
-			if p.cls == path.cls and p.length >= path.length and p.isActive:
-				p.isActive = False
-	
-	for neighbor in graph[tail]:
-		if neighbor not in path.route and neighbor != graph_state.parent.get(tail):
-			new_path = path.copy()
-			new_path.route.append(neighbor)
-			
-			edge_weight = graph[tail][neighbor]['weight']
-			new_path.edges[(tail, neighbor)] = edge_weight
-			new_path.length += edge_weight
-			new_path.lb = new_path.compute_LB1(graph_state)
+    print("="*60)
+    print("ExtendPath e geldim")
 
-			class_key = path.cls
-			if class_key not in covered_vertices:
-				covered_vertices[class_key] = set()
-			
-			if neighbor in covered_vertices[class_key]:
-				new_path.isActive = False
-			else:
-				covered_vertices[class_key].add(neighbor)
+    tail = path.tail()
 
-			if neighbor not in LQ:
-				LQ[neighbor] = []
-			heapq.heappush(LQ[neighbor], new_path)
-			
-			if LQ[neighbor]:
-				heapq.heappush(global_PQ, (LQ[neighbor][0].lb, id(LQ[neighbor]), LQ[neighbor]))
-	
-	parent = graph_state.parent.get(tail)
-	if parent is None:
-		return False
-	
-	if parent in path.route:
-		return False
-	
-	path.route.append(parent)
-	edge_weight = graph[tail][parent]['weight']
-	path.edges[(tail, parent)] = edge_weight
-	path.length += edge_weight
-	
-	return True
+    if tail in LQ:
+        for p in LQ[tail]:
+            if p.cls == path.cls and p.length >= path.length and p.isActive:
+                p.isActive = False
 
+    for neighbor in graph[tail]:
+        if neighbor not in path.route and neighbor != graph_state.parent.get(tail):
+            new_path = path.copy()
+            new_path.route.append(neighbor)
+
+            edge_weight = graph[tail][neighbor]['weight']
+            new_path.edges[(tail, neighbor)] = edge_weight
+            new_path.length += edge_weight
+            new_path.lb = new_path.LB1(graph_state)
+
+            class_key = path.cls
+            if class_key not in covered_vertices:
+                covered_vertices[class_key] = set()
+
+            if neighbor in covered_vertices[class_key]:
+                new_path.isActive = False
+            else:
+                covered_vertices[class_key].add(neighbor)
+
+            if neighbor not in LQ:
+                LQ[neighbor] = []
+            heapq.heappush(LQ[neighbor], new_path)
+
+            if LQ[neighbor]:
+                heapq.heappush(global_PQ, (LQ[neighbor][0].lb, id(LQ[neighbor]), LQ[neighbor]))
+
+    parent = graph_state.parent.get(tail)
+    if parent is None:
+        return False
+
+    if parent in path.route:
+        return False
+
+    path.route.append(parent)
+    edge_weight = graph[tail][parent]['weight']
+    path.edges[(tail, parent)] = edge_weight
+    path.length += edge_weight
+
+    return True
 
 def AdjustPath(path, LQ, result_set, dest):
 
-	if path.cls is None:
-		return 
-	
-	_, deviation_vertex = path.cls
+    print("="*60)
+    print("AdjustPath e geldim")
 
-	for vertex in path.route:
-		if vertex in LQ:
-			for p in LQ[vertex]:
-				if not p.isActive:
-					# Check if this path was dominated by current path
-					if p.cls == path.cls and p.length >= path.length:
-						p.isActive = True
-			
-	if path.tail() == dest:
-		path_id = len(result_set) + 1
-		
-		for vertex in path.route:
-			if vertex in LQ:
-				for p in LQ[vertex]:
-					# Check if path has the prefix
-					if len(p.route) > 0:
-						# Find if vertex is in p's route
-						try:
-							vertex_idx = path.route.index(vertex)
-							if len(p.route) >= vertex_idx + 1:
-								if p.route[:vertex_idx + 1] == path.route[:vertex_idx + 1]:
-									p.cls = (path_id, vertex)
-						except ValueError:
-							continue
+    if path.cls is None:
+        return
 
- 
+    _, deviation_vertex = path.cls
+
+    for vertex in path.route:
+        if vertex in LQ:
+            for p in LQ[vertex]:
+                if not p.isActive:
+                    # Check if this path was dominated by current path
+                    if p.cls == path.cls and p.length >= path.length:
+                        p.isActive = True
+
+    if path.tail() == dest:
+        path_id = len(result_set) + 1
+
+        for vertex in path.route:
+            if vertex in LQ:
+                for p in LQ[vertex]:
+                    # Check if path has the prefix
+                    if len(p.route) > 0:
+                        # Find if vertex is in p's route
+                        try:
+                            vertex_idx = path.route.index(vertex)
+                            if len(p.route) >= vertex_idx + 1:
+                                if p.route[:vertex_idx + 1] == path.route[:vertex_idx + 1]:
+                                    p.cls = (path_id, vertex)
+                        except ValueError:
+                            continue
+
 def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices):
-	while global_PQ:
 
-		_, _, current_LQ = heapq.heappop(global_PQ)
-		
-		if not current_LQ:
-			continue
-		
-		current_path = heapq.heappop(current_LQ)
+    print("="*60)
+    print("FindNextPath e geldim")
 
-		if current_LQ:
-			heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
-		
-		while current_path.tail() != dest:
-			LB2 = current_path.LB2(threshold=threshold, result_set=result_set)
-			
-			if LB2 > current_path.lb:
-				current_path.lb = LB2
-				AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
+    while global_PQ:
 
-				heapq.heappush(Q, current_path)
-				if current_LQ:
-					heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
-				break
-			
-			if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices):
-				break
+        _, _, current_LQ = heapq.heappop(global_PQ)
+        
+        if not current_LQ:
+            continue
+        
+        current_path = heapq.heappop(current_LQ)
 
-		if current_path.tail() == dest:
-			AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
-			return current_path
-	
-	return None
+        if current_LQ:
+            heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
+        
+        while current_path.tail() != dest:
+            LB2 = current_path.LB2(threshold=threshold, result_set=result_set)
+            
+            if LB2 > current_path.lb:
+                current_path.lb = LB2
+                AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
 
+                heapq.heappush(current_LQ, current_path)
+                if current_LQ:
+                    heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
+                break
+            
+            if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices):
+                break
+
+        if current_path.tail() == dest:
+            AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
+            return current_path
+    
+    return None
 
 def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
+
+	print("="*60)
+	print("KSPD ye geldim")
 
 	graph_state = GraphState(graph_reverse=graph_reverse, destination=dest)
 	result_set = []
@@ -294,7 +308,9 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
 	LQ = {}
 	covered_vertices = {}  # Track which vertices are covered by which class
 
-	shortest_path = dijkstra(graph, src, dest)
+	shortest_path = dijkstra(graph=graph, src=src, dest=dest)
+	print("shortest path: ")
+	print(shortest_path.route)
 	result_set.append(shortest_path)
 
 	for vertex in shortest_path.route[:-1]:
@@ -304,10 +320,11 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
 		for neighbor in graph[vertex]:
 			path = Path()
 			path.route = shortest_path.route[:shortest_path.route.index(vertex)+1]
-		#	 print(f"path route: {path.route}")
+			# print(f"path route: {path.route}")
+			# print(f"path length: {path.length}")
 
 			should_add = False
-		#	 print(f"neighbor: {neighbor}")
+			# print(f"neighbor: {neighbor}")
 
 			# if not path.contains(neighbor):
 			#	 if shortest_path.contains(neighbor):
@@ -315,7 +332,7 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
 			#			 path.route.append(neighbor)
 			#			 should_add = True
 			#			 # print(f"{neighbor} route a eklendi")
-			
+
 			if neighbor not in path.route:
 				if neighbor in shortest_path.route:
 					next_idx = shortest_path.route.index(vertex) + 1
@@ -327,8 +344,8 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
 				else:
 					path.route.append(neighbor)
 					should_add = True
-				#	 print(f"{neighbor} route a eklendi")
-			
+					# print(f"{neighbor} route a eklendi")
+
 			if should_add:
 				for i in range(len(path.route)-1):
 					u, v = path.route[i], path.route[i+1]
@@ -348,13 +365,55 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
 		# for a in global_PQ:
 		#	 print(a)
 
+
 	while len(result_set) < k and global_PQ:
+		# Prepare lists to hold path details from global_PQ
+		q_lbs = [] # This will hold the 'Q' column data, which seems to be the LB from global_PQ's element
+		path_routes = []
+		path_classes = []
+		path_lengths = []
+		path_lbs_from_path = [] # This will hold the 'lb' column data from the Path object
+
+		# Iterate through the elements currently in global_PQ
+		# global_PQ contains tuples: (smallest_lb_in_LQ, id_of_LQ, LQ_heap)
+		# To display, it's better to sort them by their lb for a clearer view
+		sorted_global_pq_elements = sorted(global_PQ, key=lambda x: x[0])
+
+
+		for lb_val_from_global_pq, lq_id, lq_heap in sorted_global_pq_elements:
+			if lq_heap: # Ensure the local queue is not empty
+				# Get the path with the smallest lb from this local queue
+				top_path_in_lq = lq_heap[0]
+
+				q_lbs.append(lb_val_from_global_pq) # The LB value stored in global_PQ
+				path_routes.append(str(top_path_in_lq.route)) # Convert list to string for display
+				path_classes.append(str(top_path_in_lq.cls)) # Convert tuple/None to string
+				path_lengths.append(top_path_in_lq.length)
+				path_lbs_from_path.append(top_path_in_lq.lb) # The LB value from the Path object itself
+			else:
+				# Handle cases where an LQ in global_PQ might be empty (should ideally not happen if logic is sound)
+				q_lbs.append('N/A')
+				path_routes.append('N/A')
+				path_classes.append('N/A')
+				path_lengths.append('N/A')
+				path_lbs_from_path.append('N/A')
+
+		d = {
+			'Q': q_lbs, # The lb stored in global_PQ for that local queue
+			'route': path_routes,
+			'cls': path_classes,
+			'len': path_lengths,
+			'lb': path_lbs_from_path, # The lb of the path itself
+		}
+		df = pd.DataFrame(data=d)
+		print("Current state of global_PQ (top paths from each local queue, sorted by LB):")
+		display(df) # Use display(df) for better formatted output
+
 		new_path = FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices)
 		if new_path and new_path.Sim(threshold=threshold, result_set=result_set):
 			result_set.append(new_path)
 
 	return result_set
-
 
 if __name__ == "__main__":
     # Create graph from Figure 1 in the paper
