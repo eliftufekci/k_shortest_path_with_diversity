@@ -2,6 +2,44 @@ import networkx as nx
 import heapq
 import pandas as pd
 
+
+def print_state_table(LQ, title=None, node_names=None):
+    rows = []
+
+    for vertex, lq in LQ.items():
+        if not lq:
+            continue
+
+        p = lq[0]  # en iyi path
+
+        route_str = "->".join(
+            node_names[v] if node_names else str(v)
+            for v in p.route
+        )
+
+        if p.cls:
+            cls_str = f"{p.cls[0]}:{node_names[p.cls[1]] if node_names else p.cls[1]}"
+        else:
+            cls_str = "-"
+
+        rows.append({
+            "Q": f"LQ[{node_names[vertex] if node_names else vertex}]",
+            "cls": cls_str,
+            "rt": route_str,
+            "len": p.length,
+            "lb": p.lb
+        })
+
+    df = pd.DataFrame(rows, columns=["Q", "cls", "rt", "len", "lb"])
+
+    if title:
+        print("\n" + "=" * 70)
+        print(title)
+        print("=" * 70)
+
+    display(df)
+
+
 class GraphState:
     def __init__(self, graph_reverse, destination):
         self.graph_reverse = graph_reverse
@@ -277,7 +315,7 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
     
     return None
 
-def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
+def FindKSPD(graph, graph_reverse, src, dest, k, threshold, node_names):
     graph_state = GraphState(graph_reverse=graph_reverse, destination=dest)
     result_set = []
     global_PQ = []
@@ -338,12 +376,13 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
                 if LQ[tail]:
                     heapq.heappush(global_PQ, (LQ[tail][0].lb, id(LQ[tail]), LQ[tail]))
 
-        # for a in global_PQ:
-        #     print(a)
-
+    print_state_table(LQ, title='(1) After finding and adjusting P1', node_names)
 
     while len(result_set) < k and global_PQ:
         new_path = FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices)
+
+        print_state_table(LQ, title=f'After inding P{len(result_set)+1}', node_names)
+        
         if new_path and new_path.Sim(threshold=threshold, result_set=result_set):
             result_set.append(new_path)
 
@@ -379,10 +418,10 @@ if __name__ == "__main__":
     print("Threshold (τ): 0.5")
     print("=" * 60)
     
-    result = FindKSPD(G, GR, src=1, dest=4, k=3, threshold=0.5)
-    
-    # Print results
     node_names = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'H', 8: 'I'}
+
+    result = FindKSPD(G, GR, src=1, dest=4, k=3, threshold=0.5, node_names)
+    
     
     for i, path in enumerate(result, 1):
         route_str = ' -> '.join(node_names[v] for v in path.route)
