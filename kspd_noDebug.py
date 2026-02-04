@@ -2,6 +2,16 @@ import networkx as nx
 import heapq
 import pandas as pd
 
+def print_global(pq):
+    c = pq.copy()
+    while c:
+        print(heapq.heappop(c))
+
+def print_local(pq):
+    c = pq.copy()
+    while c:
+        print(heapq.heappop(c))
+
 class GraphState:
     def __init__(self, graph_reverse, destination):
         self.graph_reverse = graph_reverse
@@ -29,19 +39,19 @@ class Path:
         self.isActive = True
 
     def __str__(self):
-        return f"Route: {self.route}, Length: {self.length}, LB: {self.lb}, Class: {self.cls}"
+        return f"Route: {self.route}, Length: {self.length}, LB: {self.lb}, Class: {self.cls}, isActive: {self.isActive}"
     
+    def __repr__(self):
+        return str(self)
+
     def __lt__(self, other):
-        return self.lb < other.lb 
+        return (not self.isActive, self.lb) < (not other.isActive, other.lb) 
     
     def tail(self):
         return self.route[-1] if self.route else None
 
     def head(self):
         return self.route[0] if self.route else None
-
-    def contains(self, vertex):
-        return vertex in self.route
     
     def copy(self):
         new_path = Path()
@@ -64,6 +74,7 @@ class Path:
         return self.length + graph_state.distances[tail]
 
     def LB2(self, threshold, result_set):
+        # return 0
         if not result_set:
             return 0 
 
@@ -165,11 +176,16 @@ def dijkstra(graph, src, dest):
     return None
 
 def ExtendPath(path, graph, graph_state, LQ, global_PQ, covered_vertices):
+    print("="*60)
+    print("ExtendPath Method")
+    print(f"\nPath to be extended {path}")
+    
     tail = path.tail()
 
     if tail in LQ:
         for p in LQ[tail]:
             if p.cls == path.cls and p.length >= path.length and p.isActive:
+                print(f"\nMake {p} inactive")
                 p.isActive = False
 
     for neighbor in graph[tail]:
@@ -195,84 +211,151 @@ def ExtendPath(path, graph, graph_state, LQ, global_PQ, covered_vertices):
                 LQ[neighbor] = []
             heapq.heappush(LQ[neighbor], new_path)
 
-            if LQ[neighbor]:
-                heapq.heappush(global_PQ, (LQ[neighbor][0].lb, id(LQ[neighbor]), LQ[neighbor]))
+            # for x in LQ.values():
+            #     print_local(x)
+
+            # print_global(global_PQ)
 
     parent = graph_state.parent.get(tail)
     if parent is None:
         return False
 
     if parent in path.route:
+        print("Found cycle!!!")
         return False
 
     path.route.append(parent)
     edge_weight = graph[tail][parent]['weight']
     path.edges[(tail, parent)] = edge_weight
     path.length += edge_weight
+    print(f"Path is extended {path}")
+
+    # print("The global and local priority queues after ExtendPath method")
+    # print_global(global_PQ)
+    # print("-"*30)
+    # for x in LQ.values():
+    #     print_local(x)
 
     return True
 
-def AdjustPath(path, LQ, result_set, dest):
+def AdjustPath(path, global_PQ, LQ, result_set, dest):
+    print("="*60)
+    print("AdjustPath Method")
+    print(f"Path to be adjusted: {path}")
+    
+    # for x in LQ.keys():
+    #     print_local(LQ[x])
+
     if path.cls is None:
         return
 
     _, deviation_vertex = path.cls
 
+    updated = False
     for vertex in path.route:
         if vertex in LQ:
             for p in LQ[vertex]:
                 if not p.isActive:
+                    print(f"Path {p} was dominated because of {path}, we activating it again")
                     # Check if this path was dominated by current path
-                    if p.cls == path.cls and p.length >= path.length:
+                    if p.cls == path.cls:
                         p.isActive = True
+                        updated = True
 
     if path.tail() == dest:
+        print(f"Path {path} reached the destination")
         path_id = len(result_set) + 1
 
-        for vertex in path.route:
-            if vertex in LQ:
-                for p in LQ[vertex]:
-                    # Check if path has the prefix
-                    if len(p.route) > 0:
-                        # Find if vertex is in p's route
-                        try:
-                            vertex_idx = path.route.index(vertex)
-                            if len(p.route) >= vertex_idx + 1:
-                                if p.route[:vertex_idx + 1] == path.route[:vertex_idx + 1]:
-                                    p.cls = (path_id, vertex)
-                        except ValueError:
-                            continue
+        for lq in LQ.values():
+            for p in lq:
+                for vertex in path.route:
+                    try:
+                        path_index = path.route.index(vertex)
+                        p_index = p.route.index(vertex)
+                        if p.route[:p_index + 1] == path.route[:path_index + 1] and len(p.route[:p_index + 1])>1:
+                            print(f"Path: {p}, has the same prefix with path: {path}, prefix: {p.route[:p_index + 1]}")
+                            print(f"Update class: {(path_id, vertex)}")
+                            p.cls = (path_id, vertex)
+                    except ValueError:
+                        continue
+
+    if updated:
+        for i in range(len(global_PQ)):
+            temp_queue = global_PQ[i][2]
+
+            if temp_queue:
+                first_active = next((p for p in temp_queue if p.isActive), None)
+                if first_active:
+                    new_key = (not first_active.isActive, first_active.lb)
+                    global_PQ[i] = (new_key, global_PQ[i][1], temp_queue)
+        
+        heapq.heapify(global_PQ)
+
+    print("The global and local priority queues after AdjustPath method")
+    print_global(global_PQ)
+    print("-"*30)
+    for x in LQ.values():
+        print_local(x)
+    
 
 def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices):
-    while global_PQ:
+    global number_of_paths_explored
 
+    print("="*60)
+    print("FindNextPath Method\n")
+
+    print("The global and local priority queues before FindNextPath method")
+    print_global(global_PQ)
+    print("-"*30)
+    for x in LQ.values():
+        print_local(x)
+    
+
+    while global_PQ:
         _, _, current_LQ = heapq.heappop(global_PQ)
-        
+
         if not current_LQ:
             continue
         
-        current_path = heapq.heappop(current_LQ)
+        current_path = current_LQ[0]            
+        number_of_paths_explored += 1
 
+        if not current_path.isActive:
+            heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
+            continue
+        
+        current_path = heapq.heappop(current_LQ)    
+
+        print(f"Path to be processed: {current_path}")
+      
         if current_LQ:
-            heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
+            heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
         
         while current_path.tail() != dest:
+            print("Processing until tail reaches destination")
+
             LB2 = current_path.LB2(threshold=threshold, result_set=result_set)
             
             if LB2 > current_path.lb:
                 current_path.lb = LB2
-                AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
-
+                AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest)
+                print(f"LB2 is larger, after adjusting: {current_path}")
                 heapq.heappush(current_LQ, current_path)
-                if current_LQ:
-                    heapq.heappush(global_PQ, (current_LQ[0].lb, id(current_LQ), current_LQ))
                 break
-            
+
             if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices):
                 break
 
         if current_path.tail() == dest:
-            AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
+            print(f"Path: {current_path}, reached destination")
+            AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest)
+
+            print("The global and local priority queues after FindNextPath method")
+            print_global(global_PQ)
+            print("-"*30)
+            for x in LQ.values():
+                print_local(x)
+            
             return current_path
     
     return None
@@ -285,29 +368,15 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
     covered_vertices = {}  # Track which vertices are covered by which class
 
     shortest_path = dijkstra(graph=graph, src=src, dest=dest)
-    print("shortest path: ")
-    print(shortest_path.route)
     result_set.append(shortest_path)
+    print(f"First shortest path found by dijsktra: {shortest_path.route}")
 
     for vertex in shortest_path.route[:-1]:
-        # print("----")
-        # print(f"vertex: {vertex}")
-
         for neighbor in graph[vertex]:
             path = Path()
             path.route = shortest_path.route[:shortest_path.route.index(vertex)+1]
-            # print(f"path route: {path.route}")
-            # print(f"path length: {path.length}")
 
             should_add = False
-            # print(f"neighbor: {neighbor}")
-
-            # if not path.contains(neighbor):
-            #     if shortest_path.contains(neighbor):
-            #         if shortest_path.route.index(vertex)+1 != shortest_path.route.index(neighbor):
-            #             path.route.append(neighbor)
-            #             should_add = True
-            #             # print(f"{neighbor} route a eklendi")
 
             if neighbor not in path.route:
                 if neighbor in shortest_path.route:
@@ -315,12 +384,10 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
                     if next_idx < len(shortest_path.route) and shortest_path.route[next_idx] != neighbor:
                         path.route.append(neighbor)
                         should_add = True
-                        # print(f"{neighbor} route a eklendi")
 
                 else:
                     path.route.append(neighbor)
                     should_add = True
-                    # print(f"{neighbor} route a eklendi")
 
             if should_add:
                 for i in range(len(path.route)-1):
@@ -336,21 +403,22 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
                 heapq.heappush(LQ[tail], path)
 
                 if LQ[tail]:
-                    heapq.heappush(global_PQ, (LQ[tail][0].lb, id(LQ[tail]), LQ[tail]))
-
-        # for a in global_PQ:
-        #     print(a)
-
+                    heapq.heappush(global_PQ, ((not LQ[tail][0].isActive, LQ[tail][0].lb), id(LQ[tail]), LQ[tail]))
+    
+    print("Global priority queue filled with first path's deviation points")
 
     while len(result_set) < k and global_PQ:
         new_path = FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices)
+        
+        print("The new candidate path found by FindNextPath Method: ")
+        print(new_path)
+        
         if new_path and new_path.Sim(threshold=threshold, result_set=result_set):
             result_set.append(new_path)
 
     return result_set
 
 if __name__ == "__main__":
-    # Create graph from Figure 1 in the paper
     G = nx.DiGraph()
     edges = [
         (1, 2, 10),   # A -> B
@@ -370,19 +438,21 @@ if __name__ == "__main__":
     # Node mapping: A=1, B=2, C=3, D=4, E=5, F=6, H=7, I=8
     G.add_weighted_edges_from(edges)
     
-    # Create reverse graph
     GR = reverse(G)
     
-    # Run algorithm
     print("Finding top-3 shortest paths with diversity...")
     print("Source: A (1), Destination: D (4)")
     print("Threshold (τ): 0.5")
     print("=" * 60)
     
-    result = FindKSPD(G, GR, src=1, dest=4, k=3, threshold=0.5)
-    
-    # Print results
     node_names = {1: 'A', 2: 'B', 3: 'C', 4: 'D', 5: 'E', 6: 'F', 7: 'H', 8: 'I'}
+    
+    number_of_paths_explored = 0
+
+    result = FindKSPD(G, GR, src=1, dest=4, k=3, threshold=0.5)    
+    # result = FindKSPD(G, GR, src=1, dest=4, k=3, threshold=1)
+
+
     
     for i, path in enumerate(result, 1):
         route_str = ' -> '.join(node_names[v] for v in path.route)
@@ -403,3 +473,4 @@ if __name__ == "__main__":
     print("\n" + "=" * 60)
 
     print(f"Total paths found: {len(result)}")
+    print(f"Number of explored paths: {number_of_paths_explored}")    
