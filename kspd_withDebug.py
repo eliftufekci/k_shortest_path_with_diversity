@@ -239,7 +239,7 @@ def ExtendPath(path, graph, graph_state, LQ, global_PQ, covered_vertices):
 
     return True
 
-def AdjustPath(path, LQ, result_set, dest):
+def AdjustPath(path, global_PQ, LQ, result_set, dest):
     print("Adjust path'e geldim")
 
     print("LQ'nun durumu")
@@ -252,6 +252,7 @@ def AdjustPath(path, LQ, result_set, dest):
 
     _, deviation_vertex = path.cls
 
+    updated = False
     for vertex in path.route:
         if vertex in LQ:
             for p in LQ[vertex]:
@@ -260,6 +261,7 @@ def AdjustPath(path, LQ, result_set, dest):
                     # Check if this path was dominated by current path
                     if p.cls == path.cls:
                         p.isActive = True
+                        updated = True
 
     if path.tail() == dest:
         print(f"{path}, destinationa ulaşmış, prefix güncellemesi yapıcaz")
@@ -278,6 +280,22 @@ def AdjustPath(path, LQ, result_set, dest):
                             p.cls = (path_id, vertex)
                     except ValueError:
                         continue
+
+    if updated:
+        for i in range(len(global_PQ)):
+            temp_queue = global_PQ[i][2]
+
+            if temp_queue:
+                first_active = next((p for p in temp_queue if p.isActive), None)
+                if first_active:
+                    new_key = (not first_active.isActive, first_active.lb)
+                    global_PQ[i] = (new_key, global_PQ[i][1], temp_queue)
+        
+        heapq.heapify(global_PQ)
+        print("global_PQ nin heapify sonrası durumu")
+        print_global(global_PQ)
+
+
 
 
 def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest, covered_vertices):
@@ -331,12 +349,14 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
             if LB2 > current_path.lb:
                 current_path.lb = LB2
                 print("lb2 değeri büyük çıktı adjust path yapıcaz")
-                AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
+                AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest)
                 print(f"adjust path yaptıktan sonra elimizdeki current path {current_path}, bunu current_LQ ya push etmemiz lazım")
                 heapq.heappush(current_LQ, current_path)
-                if current_LQ:
-                    heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
-                    print_global(global_PQ)
+                # if current_LQ:
+                #     heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
+                #     print_global(global_PQ)
+                # break
+                print_global(global_PQ)
                 break
 
             if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices):
@@ -344,7 +364,7 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
 
         if current_path.tail() == dest:
             print(f"current path: {current_path}, destinationa ulaştı, adjust path yapıcaz")
-            AdjustPath(path=current_path, LQ=LQ, result_set=result_set, dest=dest)
+            AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest)
             return current_path
     
     return None

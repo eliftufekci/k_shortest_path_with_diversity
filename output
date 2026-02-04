@@ -4,16 +4,16 @@ Threshold (τ): 0.5
 ============================================================
 fisrt shortest path: [1, 2, 3, 4]
 find kspd nin ilk kısmının sonunda global pq durumu
-((False, 25), 133416280397632, [Route: [1, 2, 6], Length: 11, LB: 25, Class: (1, 2), isActive: True])
-((False, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: True])
-((False, 30), 133416280398080, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((False, 25), 133416279508288, [Route: [1, 2, 6], Length: 11, LB: 25, Class: (1, 2), isActive: True])
+((False, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: True])
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
 Find next pathe geldim
 Find Next path başında global_PQ nun durumu
-((False, 25), 133416280397632, [Route: [1, 2, 6], Length: 11, LB: 25, Class: (1, 2), isActive: True])
-((False, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: True])
-((False, 30), 133416280398080, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((False, 25), 133416279508288, [Route: [1, 2, 6], Length: 11, LB: 25, Class: (1, 2), isActive: True])
+((False, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: True])
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
 LQ nun durumu: 
 Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True
 Route: [1, 2, 6], Length: 11, LB: 25, Class: (1, 2), isActive: True
@@ -37,9 +37,9 @@ Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False
 Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True
 Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True
 global_PQ nun durumu
-((False, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
-((False, 30), 133416280398080, [Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True, Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((False, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
+((False, 30), 133416279518784, [Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True, Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
 genişletmemi yaptım path şu hale geldi: Route: [1, 2, 6, 7, 8], Length: 13, LB: 25, Class: (1, 2), isActive: True
 tail dest e ulaşana kadar while içindeyiz
 Extend pathe geldim
@@ -52,17 +52,17 @@ path inactive olduğu için geçiyoruz
 local queue hali:
 Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False
 global queue hali:
-((False, 30), 133416280398080, [Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True, Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
-((True, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
+((False, 30), 133416279518784, [Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True, Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((True, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
 Sırayla her iterasyonda current lq içindeki pathler
 Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True
 Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True
 Find Next Path içinde o an işlenen path: Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True
 o an işlenen path çıkarıldıktan sonra local queue'da hala eleman varsa local queue'nun sonr halini tekrar global_PQ ya push ediyoruz: 
-((False, 30), 133416280398080, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
-((True, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((True, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (1, 2), isActive: False])
 tail dest e ulaşana kadar while içindeyiz
 Extend pathe geldim
 işlediğim path Route: [1, 2, 6, 7, 5], Length: 27, LB: 28, Class: (1, 2), isActive: True
@@ -81,20 +81,63 @@ class'ı (2, 2) olarak değiştiriyoruz
 p pathi: Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (1, 3), isActive: True, bulunan yeni path: Route: [1, 2, 6, 7, 5, 4], Length: 28, LB: 28, Class: (1, 2), isActive: True ile aynı prefixe sahip
 [1, 2] ile [1, 2] aynı yani
 class'ı (2, 2) olarak değiştiriyoruz
+global_PQ nin heapify sonrası durumu
+((False, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True])
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
 find next path çıktısı olan path: 
 Route: [1, 2, 6, 7, 5, 4], Length: 28, LB: 28, Class: (1, 2), isActive: True
 Find next pathe geldim
 Find Next path başında global_PQ nun durumu
-((False, 30), 133416280398080, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True])
-((False, 32), 133416280398016, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
-((True, 26), 133416280397760, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True])
+((False, 26), 133416279514048, [Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True])
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
 LQ nun durumu: 
 Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True
 Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True
 Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
 Sırayla her iterasyonda current lq içindeki pathler
+Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True
+Find Next Path içinde o an işlenen path: Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True
+tail dest e ulaşana kadar while içindeyiz
+Extend pathe geldim
+işlediğim path Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True
+eğer neighbor rotada yoksa ve benim parentim değil o yüzden uzatıyorum
+LQ ya newpathi push ettim
+Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True
+Route: [1, 2, 7, 5], Length: 28, LB: 29, Class: (2, 2), isActive: True
 Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
+global_PQ nun durumu
+((False, 30), 133416279518784, [Route: [1, 2, 7, 5], Length: 28, LB: 29, Class: (2, 2), isActive: True, Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+genişletmemi yaptım path şu hale geldi: Route: [1, 2, 7, 8], Length: 14, LB: 26, Class: (2, 2), isActive: True
+tail dest e ulaşana kadar while içindeyiz
+Extend pathe geldim
+işlediğim path Route: [1, 2, 7, 8], Length: 14, LB: 26, Class: (2, 2), isActive: True
+Cycle var, uzatamadık
+Sırayla her iterasyonda current lq içindeki pathler
+Route: [1, 2, 7, 5], Length: 28, LB: 29, Class: (2, 2), isActive: True
+Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
+Find Next Path içinde o an işlenen path: Route: [1, 2, 7, 5], Length: 28, LB: 29, Class: (2, 2), isActive: True
+o an işlenen path çıkarıldıktan sonra local queue'da hala eleman varsa local queue'nun sonr halini tekrar global_PQ ya push ediyoruz: 
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+tail dest e ulaşana kadar while içindeyiz
+lb2 değeri büyük çıktı adjust path yapıcaz
+Adjust path'e geldim
+LQ'nun durumu
+Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True
+Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
+adjust path yaptıktan sonra elimizdeki current path Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True, bunu current_LQ ya push etmemiz lazım
+((False, 30), 133416279518784, [Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True, Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True])
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+Sırayla her iterasyonda current lq içindeki pathler
+Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
+Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True
 Find Next Path içinde o an işlenen path: Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
+o an işlenen path çıkarıldıktan sonra local queue'da hala eleman varsa local queue'nun sonr halini tekrar global_PQ ya push ediyoruz: 
+((False, 32), 133416279517120, [Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True])
+((False, 47.0), 133416279518784, [Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True])
 tail dest e ulaşana kadar while içindeyiz
 Extend pathe geldim
 işlediğim path Route: [1, 2, 3, 5], Length: 29, LB: 30, Class: (2, 2), isActive: True
@@ -103,14 +146,14 @@ current path: Route: [1, 2, 3, 5, 4], Length: 30, LB: 30, Class: (2, 2), isActiv
 Adjust path'e geldim
 LQ'nun durumu
 Route: [1, 8], Length: 20, LB: 32, Class: (1, 1), isActive: True
-Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True
+Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True
 Route: [1, 2, 3, 5, 4], Length: 30, LB: 30, Class: (2, 2), isActive: True, destinationa ulaşmış, prefix güncellemesi yapıcaz
-p pathi: Route: [1, 2, 7], Length: 13, LB: 26, Class: (2, 2), isActive: True, bulunan yeni path: Route: [1, 2, 3, 5, 4], Length: 30, LB: 30, Class: (2, 2), isActive: True ile aynı prefixe sahip
+p pathi: Route: [1, 2, 7, 5], Length: 28, LB: 47.0, Class: (2, 2), isActive: True, bulunan yeni path: Route: [1, 2, 3, 5, 4], Length: 30, LB: 30, Class: (2, 2), isActive: True ile aynı prefixe sahip
 [1, 2] ile [1, 2] aynı yani
 class'ı (3, 2) olarak değiştiriyoruz
 find next path çıktısı olan path: 
 Route: [1, 2, 3, 5, 4], Length: 30, LB: 30, Class: (2, 2), isActive: True
-Number of explored paths: 4
+Number of explored paths: 6
 
 Path 1:
   Route: A -> B -> C -> D
