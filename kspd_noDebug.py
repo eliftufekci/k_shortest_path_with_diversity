@@ -62,6 +62,7 @@ class Path:
         self.lb = 0
         self.cls = None
         self.isActive = True
+        self.cached_intersections = {}
 
     def __str__(self):
         return f"Route: {self.route}, Length: {self.length}, LB: {self.lb}, Class: {self.cls}, isActive: {self.isActive}"
@@ -86,6 +87,7 @@ class Path:
         new_path.lb = self.lb
         new_path.cls = self.cls
         new_path.isActive = self.isActive
+        new_path.cached_intersections = self.cached_intersections
         return new_path
 
     def LB1(self, graph_state):
@@ -105,11 +107,16 @@ class Path:
 
         lb2 = 0
         for old_path in result_set:
-            common_edges = set(old_path.edges.keys()).intersection(set(self.edges.keys()))
-            intersection_length = sum(old_path.edges[e] for e in common_edges)
+            if id(old_path) in result_set:
+                intersection_length = self.cached_intersections[id(old_path)] 
+            
+            else:
+                common_edges = set(old_path.edges.keys()).intersection(set(self.edges.keys()))
+                intersection_length = sum(old_path.edges[e] for e in common_edges)
 
-            current_lb2 = intersection_length * (1 + 1/threshold) - old_path.length
-            lb2 = max(lb2, current_lb2)
+                current_lb2 = intersection_length * (1 + 1/threshold) - old_path.length
+                lb2 = max(lb2, current_lb2)
+                self.cached_intersections[id(old_path)] = intersection_length
 
         return lb2
 
@@ -353,6 +360,20 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
 
         current_path = heapq.heappop(current_LQ)
 
+        # current_path = None
+        # path_index = -1
+
+        # for i, path in enumerate(current_LQ):
+        #     if path.isActive and not getattr(path, '_being_processed', False):
+        #         current_path = path
+        #         path_index = i
+        #         break
+
+        # if current_path is None:
+        #     continue
+
+        # setattr(current_path, '_being_processed', True)
+
         print(f"Path to be processed: {current_path}")
 
         if current_LQ:
@@ -365,17 +386,26 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
 
             if LB2 > current_path.lb:
                 current_path.lb = LB2
+                # setattr(current_path, '_being_processed', False)
                 AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest, prefix_map=prefix_map)
                 print(f"We adjusted path: {current_path}, because of LB2 is larger")
-                heapq.heappush(current_LQ, current_path)
+                # heapq.heappush(current_LQ, current_path)
+                # heapq.heapify(current_LQ)
+                # heapq.heapify(global_PQ)
                 break
 
             if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices, prefix_map=prefix_map):
+                # setattr(current_path, '_being_processed', False)
                 break
 
         if current_path.tail() == dest:
+            # setattr(current_path, '_being_processed', False)
             if current_path.cls in covered_vertices:
                 covered_vertices[current_path.cls].clear()
+            
+            # if current_path in current_LQ:
+            #     current_LQ.remove(current_path)
+            #     heapq.heapify(current_LQ)
 
             prefix_map.remove(current_path)
 
