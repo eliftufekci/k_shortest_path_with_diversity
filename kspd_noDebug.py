@@ -418,6 +418,7 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
     LQ = {}
     covered_vertices = {}
     prefix_map = PrefixMap()
+    global_LQ_ids = set()
 
     shortest_path = dijkstra(graph=graph, src=src, dest=dest)
     result_set.append(shortest_path)
@@ -455,8 +456,9 @@ def FindKSPD(graph, graph_reverse, src, dest, k, threshold):
                 heapq.heappush(LQ[tail], path)
                 prefix_map.insert(path)
 
-                if LQ[tail] and LQ[tail] not in global_PQ:
+                if LQ[tail] and id(LQ[tail]) not in global_LQ_ids:
                     heapq.heappush(global_PQ, ((not LQ[tail][0].isActive, LQ[tail][0].lb), id(LQ[tail]), LQ[tail]))
+                    global_LQ_ids.add(id(LQ[tail]))
 
     print("Global priority queue filled with first path's deviation points")
 
