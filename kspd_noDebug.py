@@ -107,16 +107,16 @@ class Path:
 
         lb2 = 0
         for old_path in result_set:
-            if id(old_path) in result_set:
+            if id(old_path) in self.cached_intersections:
                 intersection_length = self.cached_intersections[id(old_path)] 
             
             else:
                 common_edges = set(old_path.edges.keys()).intersection(set(self.edges.keys()))
                 intersection_length = sum(old_path.edges[e] for e in common_edges)
-
-                current_lb2 = intersection_length * (1 + 1/threshold) - old_path.length
-                lb2 = max(lb2, current_lb2)
                 self.cached_intersections[id(old_path)] = intersection_length
+
+            current_lb2 = intersection_length * (1 + 1/threshold) - old_path.length
+            lb2 = max(lb2, current_lb2)
 
         return lb2
 
@@ -308,7 +308,7 @@ def AdjustPath(path, global_PQ, LQ, result_set, dest, prefix_map):
 
                 if paths_with_prefix:
                     for p in paths_with_prefix:
-                        if p.length > len(prefix):
+                        if len(p.route) > len(prefix):
                             print(f"Path: {p}, has the same prefix with path: {path}, prefix: {prefix}")
                             print(f"Update class: {(path_id, vertex)}")
                             p.cls = (path_id, vertex)
@@ -351,35 +351,27 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
         if not current_LQ:
             continue
 
-        current_path = heapq.heappop(current_LQ)
+        inactive_paths = [] 
+        current_path = None
+
+        while current_LQ:
+            candidate = heapq.heappop(current_LQ)
+
+            if candidate.isActive:
+                current_path = candidate
+                break
+            else:
+                inactive_paths.append(candidate)
+
+        for p in inactive_paths:
+            heapq.heappush(current_LQ, p)
+
+        if current_path is None:
+            if current_LQ:
+                heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
+            continue
 
         number_of_paths_explored += 1
-        inactive_paths = [] 
-
-        while not current_path.isActive:
-            if not current_LQ:
-                inactive_paths.append(current_path)
-                break
-                continue
-            else:
-                inactive_paths.append(current_path)
-                current_path = heapq.heappop(current_LQ)
-
-
-
-        # current_path = None
-        # path_index = -1
-
-        # for i, path in enumerate(current_LQ):
-        #     if path.isActive and not getattr(path, '_being_processed', False):
-        #         current_path = path
-        #         path_index = i
-        #         break
-
-        # if current_path is None:
-        #     continue
-
-        # setattr(current_path, '_being_processed', True)
 
         print(f"Path to be processed: {current_path}")
 
@@ -393,26 +385,16 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
 
             if LB2 > current_path.lb:
                 current_path.lb = LB2
-                # setattr(current_path, '_being_processed', False)
                 AdjustPath(path=current_path, global_PQ=global_PQ, LQ=LQ, result_set=result_set, dest=dest, prefix_map=prefix_map)
                 print(f"We adjusted path: {current_path}, because of LB2 is larger")
-                # heapq.heappush(current_LQ, current_path)
-                # heapq.heapify(current_LQ)
-                # heapq.heapify(global_PQ)
                 break
 
             if not ExtendPath(path=current_path, graph=graph, graph_state=graph_state, LQ=LQ, global_PQ=global_PQ, covered_vertices=covered_vertices, prefix_map=prefix_map):
-                # setattr(current_path, '_being_processed', False)
                 break
 
         if current_path.tail() == dest:
-            # setattr(current_path, '_being_processed', False)
             if current_path.cls in covered_vertices:
                 covered_vertices[current_path.cls].clear()
-            
-            # if current_path in current_LQ:
-            #     current_LQ.remove(current_path)
-            #     heapq.heapify(current_LQ)
 
             prefix_map.remove(current_path)
 
@@ -424,10 +406,6 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
             print("-"*30)
             for x in LQ.values():
                 print_local(x)
-
-            for path in inactive_paths:
-                heapq.heappush(current_LQ, path)
-            heapq.heappush(global_PQ, ((not current_LQ[0].isActive, current_LQ[0].lb), id(current_LQ), current_LQ))
 
             return current_path
 
