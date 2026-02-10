@@ -1,9 +1,9 @@
-import matplotlib.pyplot as plt
 import random
 import networkx as nx
 import heapq
 import numpy as np
 import datetime
+import matplotlib.pyplot as plt
 
 class PrefixMap:
     def __init__(self):
@@ -761,92 +761,123 @@ def visualize_paths_only(G, result_paths, node_names=None):
 
 
 if __name__ == "__main__":
-    # Küçük test grafiği
     G = nx.DiGraph()
-    # edges = [
-    #     (0, 1, 2), (0, 2, 3),
-    #     (1, 3, 1), (1, 4, 4),
-    #     (2, 3, 2), (2, 5, 5),
-    #     (3, 6, 3), (4, 6, 2),
-    #     (5, 6, 1)
-    # ]
-    # for u, v, w in edges:
-    #     G.add_edge(u, v, weight=w)
-    
-    # src, dest = 0, 6
-    
-    # Büyük graf için
+
     
     with open("/content/sample_data/web-Google.txt") as f:
         for line in f:
             u,v = map(int, line.split())
             G.add_edge(u,v,weight=1)
 
-    src = random.choice(list(G.nodes()))
-    reachable = nx.descendants(G, src)
-    
-    while not reachable:
+    GR = reverse(G)
+    node_pairs = []
+
+    for i in range(0,100):
         src = random.choice(list(G.nodes()))
         reachable = nx.descendants(G, src)
+        
+        while not reachable:
+            src = random.choice(list(G.nodes()))
+            reachable = nx.descendants(G, src)
 
-    dest = random.choice(list(reachable))
-    
-    
-    print(f"Source: {src}, Destination: {dest}")
-    print("=" * 60)
+        dest = random.choice(list(reachable))
+        node_pairs.append((src, dest))
 
-    GR = reverse(G)
+    
+    iter_bound_times = []
+    iter_bound_num_paths = []
+    
+    ksp_times = []
+    ksp_num_paths = []
+    
+    for src, dest in node_pairs:
+        number_of_paths_explored = 0
+        start_time = datetime.datetime.now()
+        
+        result_iterbound = IterBound(G, GR, src=src, dest=dest, k=30, alpha=1.1)
+        
+        end_time = datetime.datetime.now()
+        execution_time_iterbound = end_time - start_time
 
-    # IterBound ile test
-    print("\n" + "="*60)
-    print("ITERBOUND ALGORITHM")
-    print("="*60)
+        iter_bound_times.append(execution_time_iterbound)
+        iter_bound_num_paths.append(number_of_paths_explored)
+        
+        """------------------KSP------------------"""
+        
+        number_of_paths_explored = 0
+        start_time = datetime.datetime.now()
+        
+        result_kspd = FindKSPD(G, GR, src=src, dest=dest, k=30, threshold=1)
+        
+        end_time = datetime.datetime.now()
+        execution_time_kspd = end_time - start_time
+        
+        ksp_times.append(execution_time_kspd)
+        ksp_num_paths.append(number_of_paths_explored)
+
     
-    number_of_paths_explored = 0
-    start_time = datetime.datetime.now()
-    
-    result_iterbound = IterBound(G, GR, src=src, dest=dest, k=30, alpha=1.1)
-    
-    end_time = datetime.datetime.now()
-    execution_time_iterbound = end_time - start_time
-    
-    print("\n" + "="*60)
-    print("ITERBOUND RESULTS:")
-    for i, path in enumerate(result_iterbound, 1):
-        print(f"\nPath {i}:")
-        print(f"  Route: {path.route}")
-        print(f"  Length: {path.length}")
-    
-    print(f"\nTotal paths found: {len(result_iterbound)}")
-    print(f"Number of explored paths: {number_of_paths_explored}")
-    print(f"Execution time: {execution_time_iterbound}")
-    
-    # FindKSPD ile karşılaştırma
-    print("\n" + "="*60)
-    print("FINDKSPD ALGORITHM (for comparison)")
-    print("="*60)
-    
-    number_of_paths_explored = 0
-    start_time = datetime.datetime.now()
-    
-    result_kspd = FindKSPD(G, GR, src=src, dest=dest, k=30, threshold=1)
-    
-    end_time = datetime.datetime.now()
-    execution_time_kspd = end_time - start_time
-    
-    print("\n" + "="*60)
-    print("FINDKSPD RESULTS:")
-    for i, path in enumerate(result_kspd, 1):
-        print(f"\nPath {i}:")
-        print(f"  Route: {path.route}")
-        print(f"  Length: {path.length}")
-    
-    print(f"\nTotal paths found: {len(result_kspd)}")
-    print(f"Number of explored paths: {number_of_paths_explored}")
-    print(f"Execution time: {execution_time_kspd}")
-    
-    print("\n" + "="*60)
-    print("COMPARISON:")
-    print(f"IterBound time: {execution_time_iterbound}")
-    print(f"FindKSPD time: {execution_time_kspd}")
-    print("="*60)
+    iter_bound_avg_time = np.average(iter_bound_times)
+    iter_bound_avg_num_paths = np.average(iter_bound_num_paths)
+
+    ksp_avg_time = np.average(ksp_times)
+    ksp_avg_num_paths = np.average(ksp_num_paths)
+
+    print(f"Iterbound average Times: {iter_bound_avg_time}")
+    print(f"Iterbound average number of paths: {iter_bound_avg_num_paths}")
+
+    print(f"KSP average Times: {ksp_avg_time}")
+    print(f"KSP average number of paths: {ksp_avg_num_paths}")
+
+
+graph_types = ("web-google")
+algorithms = {
+    'FindKSP': ksp_avg_num_paths,
+    'IterBound': iter_bound_avg_num_paths
+}
+
+x = np.arange(len(graph_types)) 
+width = 0.25  
+multiplier = 0
+
+fig, ax = plt.subplots(layout='constrained')
+
+for attribute, measurement in algorithms.items():
+    offset = width * multiplier
+    rects = ax.bar(x + offset, measurement, width, label=attribute)
+    ax.bar_label(rects, padding=3)
+    multiplier += 1
+
+# Add some text for labels, title and custom x-axis tick labels, etc.
+ax.set_ylabel('Avg # of paths')
+ax.set_xticks(x + width, graph_types)
+ax.legend(loc='upper left', ncols=3)
+ax.set_ylim(0, 250)
+
+plt.show()
+
+
+graph_types = ("web-google")
+algorithms = {
+    'FindKSP': ksp_avg_time,
+    'IterBound': iter_bound_avg_time
+}
+
+x = np.arange(len(graph_types)) 
+width = 0.25  
+multiplier = 0
+
+fig, ax = plt.subplots(layout='constrained')
+
+for attribute, measurement in algorithms.items():
+    offset = width * multiplier
+    rects = ax.bar(x + offset, measurement, width, label=attribute)
+    ax.bar_label(rects, padding=3)
+    multiplier += 1
+
+# Add some text for labels, title and custom x-axis tick labels, etc.
+ax.set_ylabel('Avg Running Time')
+ax.set_xticks(x + width, graph_types)
+ax.legend(loc='upper left', ncols=3)
+ax.set_ylim(0, 250)
+
+plt.show()
