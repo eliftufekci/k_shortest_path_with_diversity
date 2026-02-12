@@ -100,8 +100,8 @@ class Path:
         lb2 = 0
         for old_path in result_set:
             if id(old_path) in self.cached_intersections:
-                intersection_length = self.cached_intersections[id(old_path)] 
-            
+                intersection_length = self.cached_intersections[id(old_path)]
+
             else:
                 common_edges = set(old_path.edges.keys()).intersection(set(self.edges.keys()))
                 intersection_length = sum(old_path.edges[e] for e in common_edges)
@@ -297,7 +297,7 @@ def FindNextPath(graph, graph_state, global_PQ, LQ, threshold, result_set, dest,
         if not current_LQ:
             continue
 
-        inactive_paths = [] 
+        inactive_paths = []
         current_path = None
 
         while current_LQ:
@@ -427,201 +427,160 @@ def dijkstra_simple(graph, src, dest, excluded_nodes=None):
         path = Path()
         path.route = [src]
         return path
-    
+
     if excluded_nodes is None:
         excluded_nodes = set()
-    
-    heap = [(0, src, [])]
-    visited = set()
+
+    distances = {node: float('inf') for node in graph.nodes()}
+    distances[src] = 0
+    previous_nodes = {node: None for node in graph.nodes()}
+    heap = [(0, src)]  # (cost, node)
     
     while heap:
-        cost, node, path_list = heapq.heappop(heap)
-        
-        if node in visited or node in excluded_nodes:
+        cost, node = heapq.heappop(heap)
+
+        if cost > distances[node]:
             continue
-        visited.add(node)
-        
-        if node == dest:
-            shortest_path = Path()
-            
-            for i in range(len(path_list)):
-                if i < len(path_list) - 1:
-                    u, v = path_list[i], path_list[i+1]
-                    shortest_path.edges[(u, v)] = graph[u][v]['weight']
-                    shortest_path.length += graph[u][v]['weight']
-                    shortest_path.route.append(u)
-                else:
-                    u, v = path_list[i], dest
-                    shortest_path.edges[(u, v)] = graph[u][v]['weight']
-                    shortest_path.length += graph[u][v]['weight']
-                    shortest_path.route.append(u)
-                    shortest_path.route.append(v)
-            
-            shortest_path.lb = shortest_path.length
-            return shortest_path
-        
+
+        if node in excluded_nodes:
+            continue
+
         for neighbor, data in graph[node].items():
-            if neighbor not in visited and neighbor not in excluded_nodes:
+            if neighbor not in excluded_nodes:
                 new_cost = cost + data['weight']
-                heapq.heappush(heap, (new_cost, neighbor, path_list + [node]))
+                if new_cost < distances[neighbor]:
+                    distances[neighbor] = new_cost
+                    previous_nodes[neighbor] = node
+                    heapq.heappush(heap, (new_cost, neighbor))
+
+    # Path reconstruction
+    if distances[dest] == float('inf'):
+        return None
+
+    path_route = []
+    current = dest
+    while current is not None:
+        path_route.insert(0, current)
+        current = previous_nodes[current]
     
-    return None
+    if path_route[0] != src:
+        return None # No path found
+
+    shortest_path = Path()
+    shortest_path.route = path_route
+    for i in range(len(path_route) - 1):
+        u, v = path_route[i], path_route[i+1]
+        shortest_path.edges[(u, v)] = graph[u][v]['weight']
+        shortest_path.length += graph[u][v]['weight']
+    shortest_path.lb = shortest_path.length
+
+    return shortest_path
 
 
 def FindKSPD_Yen(graph, src, dest, k, threshold):
     global number_of_paths_explored
     number_of_paths_explored = 0
-    
-    # 1. İlk en kısa yolu bul
+
     P1 = dijkstra_simple(graph, src, dest)
-    
     if P1 is None:
-        print(f"No path exists between {src} and {dest}")
         return []
-    
-    print(f"KSPD-Yen: First shortest path found, length={P1.length}")
-    
-    # Result set (Ψ)
-    result_set = [P1]
-    
-    # Candidate priority queue (sorted by length)
+
+    result_set = [P1] # Diverse paths (Ψ)
+    all_paths = [P1] # ALL accepted shortest paths (Yen's A listesi)
     candidates = []
-    
     kappa_generated = 0
-    
-    # 2. İlk yoldan deviation paths oluştur
+
+    print("First path found by dijkstra")
+
+    # İlk yoldan candidates üret
     for i in range(len(P1.route) - 1):
         spur_node = P1.route[i]
         root_path = P1.route[:i+1]
-        
-        # Root path'i oluştur
+
         root_path_obj = Path()
         root_path_obj.route = root_path.copy()
         for j in range(len(root_path) - 1):
             u, v = root_path[j], root_path[j+1]
             root_path_obj.edges[(u, v)] = graph[u][v]['weight']
             root_path_obj.length += graph[u][v]['weight']
-        
-        # Removed nodes (Yen's logic)
+
         removed_nodes = set()
-        for path in result_set:
-            if len(path.route) > i:
-                if path.route[:i+1] == root_path:
-                    if i + 1 < len(path.route):
-                        removed_nodes.add(path.route[i+1])
-        
+        for path in all_paths: # result_set değil, all_paths!
+            if len(path.route) > i and path.route[:i+1] == root_path:
+                if i + 1 < len(path.route):
+                    removed_nodes.add(path.route[i+1])
+
         excluded = set(root_path[:-1])
-        
-        # Spur path bul
-        spur_path = dijkstra_simple(graph, spur_node, dest, 
+        spur_path = dijkstra_simple(graph, spur_node, dest,
                                    excluded_nodes=excluded.union(removed_nodes))
-        
+
         if spur_path is not None:
-            # Total path oluştur
             total_path = Path()
             total_path.route = root_path_obj.route[:-1] + spur_path.route
             total_path.edges = root_path_obj.edges.copy()
             total_path.edges.update(spur_path.edges)
             total_path.length = root_path_obj.length + spur_path.length
             total_path.lb = total_path.length
-            
             kappa_generated += 1
-            
-            # Duplicate check
-            is_duplicate = False
-            for existing in candidates:
-                if existing.route == total_path.route:
-                    is_duplicate = True
-                    break
-            
+
+            is_duplicate = any(e.route == total_path.route for e in candidates)
             if not is_duplicate:
                 heapq.heappush(candidates, total_path)
-    
-    print(f"KSPD-Yen: Initial candidates generated: {kappa_generated}")
-    
-    # 3. Ana döngü
-    evaluated_count = 0  # Pop edilen sayısı
-    
+
     while len(result_set) < k and candidates:
-        # En kısa candidate'ı al
         current_path = heapq.heappop(candidates)
-        evaluated_count += 1
-        
-        print(f"KSPD-Yen: Evaluating path #{evaluated_count}, length={current_path.length}")
-        
-        # Diversity check
+        kappa_generated += 1 # evaluated count
+
+        # HER pop edilen path'i all_paths'e ekle
+        all_paths.append(current_path)
+
+        # HER pop edilen path'ten yeni candidates üret
+        for i in range(len(current_path.route) - 1):
+            spur_node = current_path.route[i]
+            root_path = current_path.route[:i+1]
+
+            root_path_obj = Path()
+            root_path_obj.route = root_path.copy()
+            for j in range(len(root_path) - 1):
+                u, v = root_path[j], root_path[j+1]
+                root_path_obj.edges[(u, v)] = graph[u][v]['weight']
+                root_path_obj.length += graph[u][v]['weight']
+
+            removed_nodes = set()
+            for path in all_paths: # ALL paths kullan
+                if len(path.route) > i and path.route[:i+1] == root_path:
+                    if i + 1 < len(path.route):
+                        removed_nodes.add(path.route[i+1])
+
+            excluded = set(root_path[:-1])
+            spur_path = dijkstra_simple(graph, spur_node, dest,
+                                       excluded_nodes=excluded.union(removed_nodes))
+
+            if spur_path is not None:
+                total_path = Path()
+                total_path.route = root_path_obj.route[:-1] + spur_path.route
+                total_path.edges = root_path_obj.edges.copy()
+                total_path.edges.update(spur_path.edges)
+                total_path.length = root_path_obj.length + spur_path.length
+                total_path.lb = total_path.length
+
+                is_duplicate = any(e.route == total_path.route for e in candidates)
+                if not is_duplicate and not any(e.route == total_path.route for e in all_paths):
+                    heapq.heappush(candidates, total_path)
+
+        # Diversity check sadece result_set'e ekleme için
         if current_path.Sim(threshold, result_set):
             result_set.append(current_path)
             print(f"KSPD-Yen: Path added to result set (total: {len(result_set)})")
-            
-            #  Bu yoldan yeni candidates oluştur (ve sayıyı arttır!)
-            for i in range(len(current_path.route) - 1):
-                spur_node = current_path.route[i]
-                root_path = current_path.route[:i+1]
-                
-                # Root path oluştur
-                root_path_obj = Path()
-                root_path_obj.route = root_path.copy()
-                for j in range(len(root_path) - 1):
-                    u, v = root_path[j], root_path[j+1]
-                    root_path_obj.edges[(u, v)] = graph[u][v]['weight']
-                    root_path_obj.length += graph[u][v]['weight']
-                
-                # Removed nodes
-                removed_nodes = set()
-                for path in result_set:
-                    if len(path.route) > i and path.route[:i+1] == root_path:
-                        if i + 1 < len(path.route):
-                            removed_nodes.add(path.route[i+1])
-                
-                excluded = set(root_path[:-1])
-                
-                # Spur path bul
-                spur_path = dijkstra_simple(graph, spur_node, dest,
-                                           excluded_nodes=excluded.union(removed_nodes))
-                
-                if spur_path is not None:
-                    # Total path
-                    total_path = Path()
-                    total_path.route = root_path_obj.route[:-1] + spur_path.route
-                    total_path.edges = root_path_obj.edges.copy()
-                    total_path.edges.update(spur_path.edges)
-                    total_path.length = root_path_obj.length + spur_path.length
-                    total_path.lb = total_path.length
-                    
-                    #HER candidate generation'da say!
-                    kappa_generated += 1
-                    
-                    # Duplicate check
-                    is_duplicate = False
-                    for existing in candidates:
-                        if existing.route == total_path.route:
-                            is_duplicate = True
-                            break
-                    
-                    for existing in result_set:
-                        if existing.route == total_path.route:
-                            is_duplicate = True
-                            break
-                    
-                    if not is_duplicate:
-                        heapq.heappush(candidates, total_path)
-        else:
-            print(f"KSPD-Yen: Path rejected (too similar)")
-    
+
+
     number_of_paths_explored = kappa_generated
-    
-    print(f"\nKSPD-Yen: Total GENERATED candidates (κ): {kappa_generated}")
-    print(f"KSPD-Yen: Total EVALUATED (popped): {evaluated_count}")
-    print(f"KSPD-Yen: Diverse paths found: {len(result_set)}")
-    
     return result_set
 
 
 if __name__ == "__main__":
     G = nx.DiGraph()
 
-    
     with open("/content/sample_data/web-Google.txt") as f:
         for line in f:
             u,v = map(int, line.split())
@@ -630,10 +589,10 @@ if __name__ == "__main__":
     GR = reverse(G)
     node_pairs = []
 
-    for i in range(0,5):
+    for i in range(0,1):
         src = random.choice(list(G.nodes()))
         reachable = nx.descendants(G, src)
-        
+
         while not reachable:
             src = random.choice(list(G.nodes()))
             reachable = nx.descendants(G, src)
@@ -641,19 +600,19 @@ if __name__ == "__main__":
         dest = random.choice(list(reachable))
         node_pairs.append((src, dest))
 
-    
+
     kspd_yen_times = []
     kspd_yen_num_paths = []
-    
+
     kspd_times = []
     kspd_num_paths = []
-    
+
     for src, dest in node_pairs:
         number_of_paths_explored = 0
         start_time = datetime.datetime.now()
-        
+
         result_kspd_yen = FindKSPD_Yen(G, src=src, dest=dest, k=10, threshold=0.6)
-        
+
         end_time = datetime.datetime.now()
         execution_time_kspd_yen = end_time - start_time
 
@@ -661,24 +620,24 @@ if __name__ == "__main__":
         kspd_yen_num_paths.append(number_of_paths_explored)
 
         kspd_yen_hop_count = average_hop_count(result_kspd_yen)
-        
+
         """------------------KSP------------------"""
-        
+
         number_of_paths_explored = 0
         start_time = datetime.datetime.now()
-        
+
         result_kspd = FindKSPD(G, GR, src=src, dest=dest, k=10, threshold=0.6)
-        
+
         end_time = datetime.datetime.now()
         execution_time_kspd = end_time - start_time
-        
+
         kspd_times.append(execution_time_kspd.total_seconds())
         kspd_num_paths.append(number_of_paths_explored)
 
         kspd_hop_count = average_hop_count(result_kspd)
 
 
-    
+
     kspd_yen_avg_time = np.average(kspd_yen_times)
     kspd_yen_avg_num_paths = np.average(kspd_yen_num_paths)
 
@@ -708,8 +667,8 @@ algorithms = {
     'kspd_yen': kspd_yen_avg_num_paths
 }
 
-x = np.arange(len(graph_types)) 
-width = 0.25  
+x = np.arange(len(graph_types))
+width = 0.25
 multiplier = 0
 
 fig, ax = plt.subplots(layout='constrained')
@@ -724,7 +683,6 @@ for attribute, measurement in algorithms.items():
 ax.set_ylabel('Avg # of paths')
 ax.set_xticks(x + width, graph_types)
 ax.legend(loc='upper left', ncols=3)
-ax.set_ylim(0, 250)
 
 plt.show()
 
@@ -735,8 +693,8 @@ algorithms = {
     'kspd_yen': kspd_yen_avg_time
 }
 
-x = np.arange(len(graph_types)) 
-width = 0.25  
+x = np.arange(len(graph_types))
+width = 0.25
 multiplier = 0
 
 fig, ax = plt.subplots(layout='constrained')
@@ -751,6 +709,5 @@ for attribute, measurement in algorithms.items():
 ax.set_ylabel('Avg Running Time')
 ax.set_xticks(x + width, graph_types)
 ax.legend(loc='upper left', ncols=3)
-ax.set_ylim(0, 250)
 
 plt.show()
