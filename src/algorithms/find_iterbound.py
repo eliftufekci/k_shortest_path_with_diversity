@@ -1,5 +1,3 @@
-# src/algorithms/find_iterbound.py
-
 import heapq
 import networkx as nx
 from typing import List, Optional, Tuple, Set

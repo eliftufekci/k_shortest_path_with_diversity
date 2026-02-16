@@ -13,7 +13,9 @@ def dijkstra(
     graph: nx.DiGraph, 
     src: int, 
     dest: int
-) -> Optional[Path]:    if src == dest:
+    ) -> Optional[Path]:    
+    
+    if src == dest:
         path = Path()
         path.route = [src]
         return path

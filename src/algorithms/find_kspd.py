@@ -9,7 +9,7 @@ from ..core.graph_utils import (
     dijkstra,
     construct_partial_spt
 )
-from ..core.bounds import compute_lb1, compute_lb2, check_similarity
+from ..core.prefix_map import PrefixMap
 
 class FindKSPD(BasePathFindingAlgorithm):
     def __init__(self, graph: nx.DiGraph, threshold: float = 0.5):

@@ -2,7 +2,6 @@ import heapq
 from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, field
 
-@dataclass
 class GraphState:
     def __init__(self, graph_reverse, destination):
         self.graph_reverse = graph_reverse
@@ -20,6 +19,7 @@ class GraphState:
         heapq.heappush(self.PQ, (0, destination))
         self.distances[destination] = 0
 
+@dataclass
 class Path:
     route: List[int] = field(default_factory=list)
     edges: Dict[Tuple[int, int], float] = field(default_factory=dict)
