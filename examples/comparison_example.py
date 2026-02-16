@@ -7,8 +7,8 @@ import gzip
 from urllib.request import urlretrieve
 import os
 
-from src.core.graph_utils import reverse
-from src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
+from ..src.core.graph_utils import reverse
+from ..src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
 
 def download_and_prepare_web_google_graph(filename_gz, filename_txt):
     url = "https://snap.stanford.edu/data/web-Google.txt.gz"

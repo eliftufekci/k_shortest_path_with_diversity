@@ -1,0 +1,53 @@
+# importing the zipfile module
+from zipfile import ZipFile
+
+# loading the temp.zip and creating a zip object
+with ZipFile("/content/sample_data/python-graph-main.zip", 'r') as zObject:
+
+    # Extracting all the members of the zip 
+    # into a specific location.
+    zObject.extractall(
+        path="/content/sample_data/python-graph-main")
+
+
+import sys
+import os
+import runpy
+
+# Define the directory that contains the top-level package 'python-graph-main'.
+# After unzipping, the structure is /content/sample_data/python-graph-main/python-graph-main/src etc.
+# To make 'python-graph-main' (the inner one) discoverable as a package, we need to add its parent directory
+# (/content/sample_data/python-graph-main) to sys.path.
+top_level_container_dir = "/content/sample_data/python-graph-main"
+
+# Add this directory to sys.path if it's not already there.
+# This allows Python to find 'python-graph-main' as a top-level package.
+if top_level_container_dir not in sys.path:
+    sys.path.insert(0, top_level_container_dir)
+
+# The full module name we want to run, relative to the path added above.
+# It corresponds to 'python-graph-main/examples/comparison_example.py'.
+module_name = "python-graph-main.examples.comparison_example"
+
+# To fix the ModuleNotFoundError, we need to correct the import statements in
+# python-graph-main/src/algorithms/__init__.py. The current imports incorrectly
+# include '.py' in the module name. We'll read the file, make the corrections,
+# and then execute the original module.
+
+init_py_path = os.path.join(top_level_container_dir, "python-graph-main", "src", "algorithms", "__init__.py")
+
+with open(init_py_path, 'r') as f:
+    content = f.read()
+
+# Correct the import lines by removing '.py'
+content = content.replace("from .find_ksp.py import FindKSP", "from .find_ksp import FindKSP")
+content = content.replace("from .find_kspd_minus.py import FindKSPD_Minus", "from .find_kspd_minus import FindKSPD_Minus")
+
+with open(init_py_path, 'w') as f:
+    f.write(content)
+
+# Run the script as a module. This is crucial for correctly setting '__package__'
+# and allowing relative imports (like '..src.core.graph_utils') to function.
+# 'run_name="__main__"' makes it behave as if it were the main script.
+# 'alter_sys=True' ensures sys.argv[0] and sys.path are set appropriately.
+runpy.run_module(module_name, run_name="__main__", alter_sys=True)
