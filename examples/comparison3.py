@@ -3,8 +3,10 @@ import random
 import datetime
 import numpy as np
 import os
+import matplotlib.ticker as ticker
+import matplotlib.pyplot as plt
 
-import draw_bar_chart
+import draw_line_chart
 from ..src.core.graph_utils import reverse
 from ..src.algorithms import FindKSP, FindIterBound
 
@@ -67,25 +69,20 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         (iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count)
     )
 
-def ksp_vs_iterbound():
-    k_to_find = 30
+def ksp_vs_iterbound_diff_k_values():
+    k_list = [10, 20, 30, 40, 50]
     diversity_threshold = 0.6 #not important
 
-    web_google_path  = "/graph-data/web-Google.txt"
-    wiki_talk_path   = "/graph-data/wiki-Talk.txt"   
+
     roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
-    roadCOL_path     = "/graph-data/USA-road-d.COL.gr"
 
-    web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)
-    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)  # DÜZELTME
-    roadFLA_result    = find_results_based_on_graph(roadFLA_path,    k_to_find, diversity_threshold)
-    roadCOL_result    = find_results_based_on_graph(roadCOL_path,    k_to_find, diversity_threshold)
+    all_results = []
 
-    # Her result tuple'ı: (kspd, kspd_minus, kspd_yen)
-    # Her biri de: (avg_time, avg_num_paths, avg_hop_count)
-    all_results = [web_google_result, wiki_talk_result, roadCOL_result, roadFLA_result]
+    for k_to_find in k_list:
+        roadFLA_result = find_results_based_on_graph(roadFLA_path, k_to_find, diversity_threshold)
+        all_results.append(roadFLA_result)
 
-    graph_types = ("web-Google", "wiki-Talk", "RoadCOL", "RoadFLA")
+    graph_types = ("RoadFLA",)
 
     # DÜZELTME: Her grafik için doğru indekslerle değerleri topla
     algorithms_paths = {
@@ -98,4 +95,9 @@ def ksp_vs_iterbound():
         'FindIterbound': [r[1][0] for r in all_results],
     }
 
-    draw_bar_chart(graph_types, algorithms_paths, algorithms_time)
+    markers = {
+        'FindKSP':       's',  # □ kare
+        'FindIterbound': '^',  # △ üçgen
+    }
+
+    draw_line_chart(k_list, markers, algorithms_paths, algorithms_time, graph_name="RoadFLA")

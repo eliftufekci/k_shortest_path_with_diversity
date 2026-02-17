@@ -3,10 +3,12 @@ import random
 import datetime
 import numpy as np
 import os
+import matplotlib.ticker as ticker
+import matplotlib.pyplot as plt
 
-import draw_bar_chart
+import draw_line_chart
 from ..src.core.graph_utils import reverse
-from ..src.algorithms import FindKSP, FindIterBound
+from ..src.algorithms import FindKSPD, FindKSPD_Minus
 
 def average_hop_count(result):
     if not result:
@@ -59,43 +61,42 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         dest = random.choice(reachable)
         node_pairs.append((src, dest))
 
-    iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
-    ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
+    kspd_avg_time, kspd_avg_num_paths, kspd_avg_hop_count = run_algorithm(FindKSPD, G, diversity_threshold, k_to_find, node_pairs)
+    kspd_minus_avg_time, kspd_minus_avg_num_paths, kspd_minus_avg_hop_count = run_algorithm(FindKSPD_Minus, G, diversity_threshold, k_to_find, node_pairs)
 
     return (
-        (ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count),
-        (iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count)
+        (kspd_avg_time, kspd_avg_num_paths, kspd_avg_hop_count),
+        (kspd_minus_avg_time, kspd_minus_avg_num_paths, kspd_minus_avg_hop_count)
     )
 
-def ksp_vs_iterbound():
-    k_to_find = 30
+def kspd_vs_kspd_minus_diff_k_values():
+    k_list = [5, 10, 15, 20]
     diversity_threshold = 0.6 #not important
 
-    web_google_path  = "/graph-data/web-Google.txt"
-    wiki_talk_path   = "/graph-data/wiki-Talk.txt"   
     roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
-    roadCOL_path     = "/graph-data/USA-road-d.COL.gr"
 
-    web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)
-    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)  # DÜZELTME
-    roadFLA_result    = find_results_based_on_graph(roadFLA_path,    k_to_find, diversity_threshold)
-    roadCOL_result    = find_results_based_on_graph(roadCOL_path,    k_to_find, diversity_threshold)
+    all_results = []
 
-    # Her result tuple'ı: (kspd, kspd_minus, kspd_yen)
-    # Her biri de: (avg_time, avg_num_paths, avg_hop_count)
-    all_results = [web_google_result, wiki_talk_result, roadCOL_result, roadFLA_result]
+    for k_to_find in k_list:
+        roadFLA_result = find_results_based_on_graph(roadFLA_path, k_to_find, diversity_threshold)
+        all_results.append(roadFLA_result)
 
-    graph_types = ("web-Google", "wiki-Talk", "RoadCOL", "RoadFLA")
+    graph_types = ("RoadFLA",)
 
     # DÜZELTME: Her grafik için doğru indekslerle değerleri topla
     algorithms_paths = {
-        'FindKSP':       [r[0][1] for r in all_results],  # index 1 = avg_num_paths
-        'FindIterbound': [r[1][1] for r in all_results],
+        'FindKSPD':       [r[0][1] for r in all_results],  # index 1 = avg_num_paths
+        'FindKSPD_Minus': [r[1][1] for r in all_results],
     }
 
     algorithms_time = {
-        'FindKSP':       [r[0][0] for r in all_results],  # index 0 = avg_time
-        'FindIterbound': [r[1][0] for r in all_results],
+        'FindKSPD':       [r[0][0] for r in all_results],  # index 0 = avg_time
+        'FindKSPD_Minus': [r[1][0] for r in all_results],
     }
 
-    draw_bar_chart(graph_types, algorithms_paths, algorithms_time)
+    markers = {
+        'FindKSPD':       's',  # □ kare
+        'FindKSPD_Minus': '^',  # △ üçgen
+    }
+
+    draw_line_chart(k_list, markers, algorithms_paths, algorithms_time, graph_name="RoadFLA")

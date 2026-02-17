@@ -5,6 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import os
 
+import draw_bar_chart
 from ..src.core.graph_utils import reverse
 from ..src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
 
@@ -69,7 +70,7 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         (kspd_yen_avg_time, kspd_yen_avg_num_paths, kspd_yen_avg_hop_count)
     )
 
-def findkspd_vs_findkspd_minus_vs_findkspd_yen():
+def kspd_vs_kspd_minus_vs_kspd_yen():
     k_to_find = 10
     diversity_threshold = 0.6
 
@@ -102,45 +103,4 @@ def findkspd_vs_findkspd_minus_vs_findkspd_yen():
         'FindKSPD_Yen':   [r[2][0] for r in all_results],
     }
 
-    draw_plot(graph_types, algorithms_paths, algorithms_time)
-
-
-def draw_plot(graph_types, algorithms_paths, algorithms_time):
-    x = np.arange(len(graph_types))
-    width = 0.25
-
-    # --- Plot 1: Running Time ---
-    fig, ax = plt.subplots(layout='constrained')
-    multiplier = 0
-    for attribute, measurement in algorithms_time.items():  # DÜZELTME: algorithms -> algorithms_time
-        offset = width * multiplier
-        rects = ax.bar(x + offset, measurement, width, label=attribute)
-        ax.bar_label(rects, padding=3)
-        multiplier += 1
-
-    ax.set_ylabel('Avg Running Time (seconds)')
-    ax.set_title('Average Running Time for Real-world Graphs')
-    ax.set_xticks(x + width, graph_types)               # DÜZELTME: graph_type -> graph_types
-    ax.legend(loc='upper left', ncols=2)
-    plt.yscale('symlog')
-    plt.show()
-
-    # --- Plot 2: # of Paths Explored ---
-    fig, ax = plt.subplots(layout='constrained')
-    multiplier = 0
-    for attribute, measurement in algorithms_paths.items():  # DÜZELTME: algorithms -> algorithms_paths
-        offset = width * multiplier
-        rects = ax.bar(x + offset, measurement, width, label=attribute)
-        ax.bar_label(rects, padding=3)
-        multiplier += 1
-
-    ax.set_ylabel('Avg # of Paths Explored')
-    ax.set_title('Average Paths Explored for Real-world Graphs')
-    ax.set_xticks(x + width, graph_types)               # DÜZELTME: graph_type -> graph_types
-    ax.legend(loc='upper left', ncols=2)
-    plt.yscale('symlog')
-    plt.show()
-
-
-if __name__ == "__main__":
-    findkspd_vs_findkspd_minus_vs_findkspd_yen()
+    draw_bar_chart(graph_types, algorithms_paths, algorithms_time)
