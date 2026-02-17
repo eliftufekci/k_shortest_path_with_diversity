@@ -3,18 +3,18 @@ import networkx as nx
 from typing import Optional, Tuple, Dict, List
 from .data_structures import Path, GraphState
 
+
 def reverse(graph: nx.DiGraph) -> nx.DiGraph:
     Gr = nx.DiGraph()
-    Gr.add_edges_from((v,u,d) for u,v,d in graph.edges(data=True))
+    Gr.add_edges_from((v, u, d) for u, v, d in graph.edges(data=True))
     return Gr
 
 
 def dijkstra(
-    graph: nx.DiGraph, 
-    src: int, 
-    dest: int
-    ) -> Optional[Path]:    
-    
+        graph: nx.DiGraph,
+        src: int,
+        dest: int
+) -> Optional[Path]:
     if src == dest:
         path = Path()
         path.route = [src]
@@ -35,7 +35,7 @@ def dijkstra(
 
             for i in range(len(path_list)):
                 if i < len(path_list) - 1:
-                    u, v = path_list[i], path_list[i+1]
+                    u, v = path_list[i], path_list[i + 1]
                     shortest_path.edges[(u, v)] = graph[u][v]['weight']
                     shortest_path.length += graph[u][v]['weight']
                     shortest_path.route.append(u)
@@ -55,6 +55,7 @@ def dijkstra(
                 heapq.heappush(heap, (new_cost, neighbor, path_list + [node]))
 
     return None
+
 
 def construct_partial_spt(graph_state: GraphState, v: int) -> float:
     if graph_state.isSettled[v]:
@@ -85,23 +86,23 @@ def construct_partial_spt(graph_state: GraphState, v: int) -> float:
 
 
 def _build_path(
-    graph: nx.DiGraph, 
-    path_list: List[int], 
-    dest: int, 
-    cost: float
+        graph: nx.DiGraph,
+        path_list: List[int],
+        dest: int,
+        cost: float
 ) -> Path:
     shortest_path = Path()
-    
+
     for i in range(len(path_list)):
         if i < len(path_list) - 1:
             u, v = path_list[i], path_list[i + 1]
         else:
             u, v = path_list[i], dest
-        
+
         shortest_path.edges[(u, v)] = graph[u][v]['weight']
         shortest_path.length += graph[u][v]['weight']
         shortest_path.route.append(u)
-    
+
     shortest_path.route.append(dest)
     shortest_path.lb = shortest_path.length
     return shortest_path

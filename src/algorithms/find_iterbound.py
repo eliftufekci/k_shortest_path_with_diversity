@@ -2,9 +2,9 @@ import heapq
 import networkx as nx
 from typing import List, Optional, Tuple, Set
 
-from src.algorithms.base import BasePathFindingAlgorithm
-from src.core.data_structures import Path, GraphState
-from src.core.graph_utils import dijkstra, reverse, construct_partial_spt
+from .base import BasePathFindingAlgorithm
+from ..core.data_structures import Path, GraphState
+from ..core.graph_utils import dijkstra, reverse, construct_partial_spt
 
 class Subspace:
     """

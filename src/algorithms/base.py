@@ -4,31 +4,31 @@ import networkx as nx
 from ..core.data_structures import Path
 
 
-class BasePathFindingAlgorithm(ABC):    
+class BasePathFindingAlgorithm(ABC):
     def __init__(self, graph: nx.DiGraph, threshold: float = 0.5):
         self.graph = graph
         self.threshold = threshold
-    
+
     @abstractmethod
     def find_paths(
-        self, 
-        src: int, 
-        dest: int, 
-        k: int
+            self,
+            src: int,
+            dest: int,
+            k: int
     ) -> List[Path]:
         """
         K en uygun yolu bul.
-        
+
         Args:
             src: Başlangıç vertex
             dest: Hedef vertex
             k: Kaç yol bulunacak
-        
+
         Returns:
             Path listesi
         """
         pass
-    
+
     def validate_parameters(self, src: int, dest: int, k: int) -> None:
         """Parametreleri kontrol et."""
         if src not in self.graph:

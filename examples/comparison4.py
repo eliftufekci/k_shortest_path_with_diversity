@@ -2,13 +2,10 @@ import networkx as nx
 import random
 import datetime
 import numpy as np
-import os
-import matplotlib.ticker as ticker
-import matplotlib.pyplot as plt
 
-import draw_line_chart
-from ..src.core.graph_utils import reverse
-from ..src.algorithms import FindKSPD, FindKSPD_Minus
+from . import draw_line_chart
+from src.core.graph_utils import reverse
+from src.algorithms import FindKSPD, FindKSPD_Minus
 
 def average_hop_count(result):
     if not result:

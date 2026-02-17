@@ -1,11 +1,12 @@
 import gzip
 from urllib.request import urlretrieve
 
+
 def download_and_prepare_graphs():
     """WEB GOOGLE GRAPH"""
     url = ("https://snap.stanford.edu/data/web-Google.txt.gz")
-    filename_gz = "/graph-data/web-Google.txt.gz"
-    filename_txt = "/graph-data/web-Google.txt" 
+    filename_gz = "graph-data/web-Google.txt.gz"
+    filename_txt = "graph-data/web-Google.txt"
 
     urlretrieve(url, filename_gz)
 
@@ -14,7 +15,7 @@ def download_and_prepare_graphs():
         with open(filename_txt, 'wb') as f_out:
             # Skip the first 4 lines
             for _ in range(4):
-                next(f_in) # Read and discard a line
+                next(f_in)  # Read and discard a line
 
             # Write the remaining lines to the output file
             for line_bytes in f_in:
@@ -22,11 +23,10 @@ def download_and_prepare_graphs():
 
     print(f"Successfully decompressed and filtered {filename_gz} to {filename_txt}")
 
-
     """WIKI TALK  GRAPH"""
     url = ("https://snap.stanford.edu/data/wiki-Talk.txt.gz")
-    filename_gz = "/graph-data/wiki-Talk.txt.gz"
-    filename_txt = "/graph-data/wiki-Talk.txt" # This will be the decompressed file
+    filename_gz = "graph-data/wiki-Talk.txt.gz"
+    filename_txt = "graph-data/wiki-Talk.txt"  # This will be the decompressed file
 
     urlretrieve(url, filename_gz)
 
@@ -35,7 +35,7 @@ def download_and_prepare_graphs():
         with open(filename_txt, 'wb') as f_out:
             # Skip the first 4 lines
             for _ in range(4):
-                next(f_in) # Read and discard a line
+                next(f_in)  # Read and discard a line
 
             # Write the remaining lines to the output file
             for line_bytes in f_in:
@@ -43,11 +43,10 @@ def download_and_prepare_graphs():
 
     print(f"Successfully decompressed and filtered (skipped first 4 lines) {filename_gz} to {filename_txt}")
 
-
     """ROADFLA GRAPH"""
     url = "https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.FLA.gr.gz"
-    filename_gz = "/graph-data/USA-road-d.FLA.gr.gz"
-    filename_gr = "/graph-data/USA-road-d.FLA.gr"
+    filename_gz = "graph-data/USA-road-d.FLA.gr.gz"
+    filename_gr = "graph-data/USA-road-d.FLA.gr"
 
     urlretrieve(url, filename_gz)
 
@@ -76,11 +75,10 @@ def download_and_prepare_graphs():
 
     print(f"Successfully decompressed and filtered (skipped first 4 lines) {filename_gz} to {filename_gr}")
 
-
     """ROADCOL GRAPH"""
     url = "https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.COL.gr.gz"
-    filename_gz = "/graph-data/USA-road-d.COL.gr.gz"
-    filename_gr = "/graph-data/USA-road-d.COL.gr"
+    filename_gz = "graph-data/USA-road-d.COL.gr.gz"
+    filename_gr = "graph-data/USA-road-d.COL.gr"
 
     urlretrieve(url, filename_gz)
 
@@ -106,6 +104,6 @@ def download_and_prepare_graphs():
                 v = int(parts[2])
                 cost = int(parts[3])
                 edges.append((u, v, cost))
-    
+
     print(f"Successfully decompressed and filtered (skipped first 4 lines) {filename_gz} to {filename_gr}")
 

@@ -2,12 +2,10 @@ import networkx as nx
 import random
 import datetime
 import numpy as np
-import matplotlib.pyplot as plt
-import os
 
-import draw_bar_chart
-from ..src.core.graph_utils import reverse
-from ..src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
+from . import draw_bar_chart
+from src.core.graph_utils import reverse
+from src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
 
 def average_hop_count(result):
     if not result:
