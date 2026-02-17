@@ -5,31 +5,6 @@ This project implements five different path-finding algorithms on directed graph
 🧠 Algorithms
 AlgorithmDescriptionFindKSPDMain algorithm for finding K diverse shortest pathsFindKSPD_MinusSimplified version of KSPDFindKSPD_YenKSPD built on top of Yen's algorithmFindKSPK shortest paths without diversity constraintsFindIterBoundIterative bound-based path finding
 All algorithms accept a threshold parameter (diversity threshold, between 0 and 1). The higher the value, the more distinct the returned paths will be from each other.
-📁 Project Structure
-python-graph/
-├── src/
-│   ├── algorithms/
-│   │   ├── base.py              # Abstract base class
-│   │   ├── find_kspd.py
-│   │   ├── find_kspd_minus.py
-│   │   ├── find_kspd_yen.py
-│   │   ├── find_ksp.py
-│   │   └── find_iterbound.py
-│   └── core/
-│       ├── data_structures.py   # Path, GraphState data structures
-│       ├── graph_utils.py       # Dijkstra, reverse graph utilities
-│       └── prefix_map.py
-├── examples/
-│   ├── main.py                  # Runs all comparisons
-│   ├── basic_example.py         # Simple usage example
-│   ├── download_graphs.py       # Downloads real-world graph datasets
-│   ├── comparison1.py           # KSPD vs KSPD_Minus vs KSPD_Yen
-│   ├── comparison2.py           # KSP vs IterBound
-│   ├── comparison3.py           # KSP vs IterBound (varying k values)
-│   ├── comparison4.py           # KSPD vs KSPD_Minus (varying k values)
-│   ├── comparison5.py           # KSPD vs KSPD_Minus (varying t values)
-│   ├── draw_bar_chart.py        # Bar chart rendering
-│   └── draw_line_chart.py       # Line chart rendering
 
 🚀 Setup & Usage
 Google Colab (Recommended)
