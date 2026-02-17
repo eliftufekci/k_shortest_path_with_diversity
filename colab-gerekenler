@@ -1,14 +1,4 @@
-# importing the zipfile module
-from zipfile import ZipFile
-
-# loading the temp.zip and creating a zip object
-with ZipFile("/content/sample_data/python-graph-main.zip", 'r') as zObject:
-
-    # Extracting all the members of the zip 
-    # into a specific location.
-    zObject.extractall(
-        path="/content/sample_data/python-graph-main")
-
+!rm /content/python-graph/dijkstra.ipynb /content/python-graph/eda.ipynb /content/python-graph/graph_download.py /content/python-graph/iterbound.py /content/python-graph/kspd.py /content/python-graph/kspd_minus.py /content/python-graph/kspd_noDebug.py /content/python-graph/kspd_withDebug.py /content/python-graph/kspd_yen.py /content/python-graph/road-col.py /content/python-graph/road-fla.py /content/python-graph/web-google.py
 
 import sys
 import os
