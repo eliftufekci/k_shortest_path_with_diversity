@@ -1,7 +1,6 @@
 import heapq
 from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, field
-from .graph_utils import construct_partial_spt
 
 
 class GraphState:
@@ -57,6 +56,7 @@ class Path:
         )
 
     def LB1(self, graph_state):
+        from .graph_utils import construct_partial_spt
         tail = self.tail()
         if tail is None:
             return 0
