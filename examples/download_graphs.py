@@ -32,36 +32,36 @@ def _download_and_extract(url, filename_gz, filename_out, skip_lines=0):
 
 
 def download_and_prepare_graphs():
-    os.makedirs("graph-data", exist_ok=True)
+    os.makedirs("/content/python-graph/graph-data", exist_ok=True)
 
     """WEB GOOGLE GRAPH"""
     _download_and_extract(
         url="https://snap.stanford.edu/data/web-Google.txt.gz",
-        filename_gz="graph-data/web-Google.txt.gz",
-        filename_out="graph-data/web-Google.txt",
+        filename_gz="/content/python-graph/graph-data/USA-road-d.FLA.gr/web-Google.txt.gz",
+        filename_out="/content/python-graph/graph-data/USA-road-d.FLA.gr/web-Google.txt",
         skip_lines=4
     )
 
     """WIKI TALK GRAPH"""
     _download_and_extract(
         url="https://snap.stanford.edu/data/wiki-Talk.txt.gz",
-        filename_gz="graph-data/wiki-Talk.txt.gz",
-        filename_out="graph-data/wiki-Talk.txt",
+        filename_gz="/content/python-graph/graph-data/wiki-Talk.txt.gz",
+        filename_out="/content/python-graph/graph-data/wiki-Talk.txt",
         skip_lines=4
     )
 
     """ROADFLA GRAPH"""
     _download_and_extract(
         url="https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.FLA.gr.gz",
-        filename_gz="graph-data/USA-road-d.FLA.gr.gz",
-        filename_out="graph-data/USA-road-d.FLA.gr",
+        filename_gz="/content/python-graph/graph-data/USA-road-d.FLA.gr.gz",
+        filename_out="/content/python-graph/graph-data/USA-road-d.FLA.gr",
         skip_lines=0
     )
 
     """ROADCOL GRAPH"""
     _download_and_extract(
         url="https://www.diag.uniroma1.it/challenge9/data/USA-road-d/USA-road-d.COL.gr.gz",
-        filename_gz="graph-data/USA-road-d.COL.gr.gz",
-        filename_out="graph-data/USA-road-d.COL.gr",
+        filename_gz="/content/python-graph/graph-data/USA-road-d.COL.gr.gz",
+        filename_out="/content/python-graph/graph-data/USA-road-d.COL.gr",
         skip_lines=0
     )
