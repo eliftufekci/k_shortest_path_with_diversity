@@ -4,6 +4,7 @@ import datetime
 import numpy as np
 
 from . import draw_bar_chart
+from . import draw_distribution
 from src.core.graph_utils import reverse
 from src.algorithms import FindKSP, FindIterBound
 
@@ -22,7 +23,7 @@ def run_algorithm(algorithm, G, threshold, k, node_pairs):
 
         start_time = datetime.datetime.now()
         alg = algorithm(G, threshold)
-        result = alg.find_paths(src=src, dest=dest, k=k)  # DÜZELTME: k_to_find -> k
+        result = alg.find_paths(src=src, dest=dest, k=k)
         end_time = datetime.datetime.now()
         execution_time = end_time - start_time
 
@@ -34,7 +35,7 @@ def run_algorithm(algorithm, G, threshold, k, node_pairs):
     avg_num_paths = np.average(num_paths) if num_paths else 0
     avg_hop_count = np.average(all_hop_counts) if all_hop_counts else 0
 
-    return avg_time, avg_num_paths, avg_hop_count
+    return avg_time, avg_num_paths, avg_hop_count, times, num_paths
 
 def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     G = nx.DiGraph()
@@ -58,35 +59,46 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         dest = random.choice(reachable)
         node_pairs.append((src, dest))
 
-    iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
-    ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
+    ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count, ksp_times, ksp_num_paths = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
+    iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count, iterbound_times, iterbound_num_paths = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
 
     return (
-        (ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count),
-        (iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count)
+        (ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count, ksp_times, ksp_num_paths),
+        (iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count, iterbound_times, iterbound_num_paths)
     )
+
+def print_hop_count_table(graph_types, all_results):
+    col_w = 15
+    header = f"{'Graph':<{col_w}} {'FindKSP Avg Hop':>{col_w}} {'FindIterBound Avg Hop':>{col_w+5}}"
+    print("\n" + "=" * len(header))
+    print("Average Hop Count Table")
+    print("=" * len(header))
+    print(header)
+    print("-" * len(header))
+    for graph_name, result in zip(graph_types, all_results):
+        ksp_hop  = result[0][2]
+        iter_hop = result[1][2]
+        print(f"{graph_name:<{col_w}} {ksp_hop:>{col_w}.4f} {iter_hop:>{col_w+5}.4f}")
+    print("=" * len(header) + "\n")
 
 def ksp_vs_iterbound():
     k_to_find = 30
     diversity_threshold = 0.6 #not important
 
-    web_google_path  = "/graph-data/web-Google.txt"
-    wiki_talk_path   = "/graph-data/wiki-Talk.txt"   
-    roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
-    roadCOL_path     = "/graph-data/USA-road-d.COL.gr"
+    web_google_path = "/graph-data/web-Google.txt"
+    wiki_talk_path  = "/graph-data/wiki-Talk.txt"
+    roadFLA_path    = "/graph-data/USA-road-d.FLA.gr"
+    roadCOL_path    = "/graph-data/USA-road-d.COL.gr"
 
     web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)
-    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)  # DÜZELTME
+    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)
     roadFLA_result    = find_results_based_on_graph(roadFLA_path,    k_to_find, diversity_threshold)
     roadCOL_result    = find_results_based_on_graph(roadCOL_path,    k_to_find, diversity_threshold)
 
-    # Her result tuple'ı: (kspd, kspd_minus, kspd_yen)
-    # Her biri de: (avg_time, avg_num_paths, avg_hop_count)
     all_results = [web_google_result, wiki_talk_result, roadCOL_result, roadFLA_result]
 
     graph_types = ("web-Google", "wiki-Talk", "RoadCOL", "RoadFLA")
 
-    # DÜZELTME: Her grafik için doğru indekslerle değerleri topla
     algorithms_paths = {
         'FindKSP':       [r[0][1] for r in all_results],  # index 1 = avg_num_paths
         'FindIterbound': [r[1][1] for r in all_results],
@@ -98,3 +110,32 @@ def ksp_vs_iterbound():
     }
 
     draw_bar_chart(graph_types, algorithms_paths, algorithms_time)
+
+    # Print avg_hop_count as a table
+    print_hop_count_table(graph_types, all_results)
+
+    # Collect raw data across graphs for distribution plots
+    all_ksp_times = []
+    all_iterbound_times = []
+    all_ksp_num_paths = []
+    all_iterbound_num_paths = []
+
+    for result in all_results:
+        all_ksp_times.extend(result[0][3])
+        all_ksp_num_paths.extend(result[0][4])
+        all_iterbound_times.extend(result[1][3])
+        all_iterbound_num_paths.extend(result[1][4])
+
+    # Plotting distributions for times
+    plot_configs_time = [
+        ('FindKSP Execution Times', all_ksp_times, 'skyblue'),
+        ('FindIterBound Execution Times', all_iterbound_times, 'lightcoral'),
+    ]
+    draw_distribution(plot_configs_time)
+
+    # Plotting distributions for number of paths
+    plot_configs_num_paths = [
+        ('FindKSP Number of Paths Explored', all_ksp_num_paths, 'skyblue'),
+        ('FindIterBound Number of Paths Explored', all_iterbound_num_paths, 'lightcoral'),
+    ]
+    draw_distribution(plot_configs_num_paths)
