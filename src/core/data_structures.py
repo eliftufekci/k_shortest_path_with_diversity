@@ -1,6 +1,7 @@
 import heapq
 from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, field
+from .graph_utils import construct_partial_spt
 
 
 class GraphState:
@@ -61,7 +62,7 @@ class Path:
             return 0
 
         if not graph_state.isSettled[tail]:
-            ConstructPartialSPT(graph_state=graph_state, v=tail)
+            construct_partial_spt(graph_state=graph_state, v=tail)
 
         return self.length + graph_state.distances[tail]
 
