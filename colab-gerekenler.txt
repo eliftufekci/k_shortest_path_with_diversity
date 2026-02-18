@@ -58,3 +58,26 @@ try:
 finally:
     # Restore the original working directory
     os.chdir(original_cwd)
+
+
+
+----------------------------------
+
+import sys
+import os
+
+project_root = "/content/python-graph"
+
+# Add the project root to sys.path so Python can find the 'examples' package
+# This is for the current kernel process, but not directly inherited by subprocesses.
+if project_root not in sys.path:
+    sys.path.append(project_root)
+
+# Create the directory for storing graph data if it doesn't exist
+data_dir = os.path.join(project_root, 'graph-data')
+os.makedirs(data_dir, exist_ok=True)
+
+# Now, run main.py as a module within its package context by explicitly setting PYTHONPATH.
+# This also ensures the current working directory for the subprocess is `project_root`
+# so relative paths (like 'graph-data/...') within the script resolve correctly.
+!cd {project_root} && PYTHONPATH={project_root} python -m examples.main
