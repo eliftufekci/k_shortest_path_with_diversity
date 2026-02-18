@@ -254,7 +254,6 @@ class FindIterBound(BasePathFindingAlgorithm):
             print(f"No path exists between {src} and {dest}")
             return []
 
-        print(f"Initial shortest path found: length = {P0.length}")
 
         # 2. Priority queue başlat
         # Q: [(lower_bound, unique_id, subspace)]
@@ -284,7 +283,6 @@ class FindIterBound(BasePathFindingAlgorithm):
 
             # Eğer lower bound infinity ise, bu alt-uzaydan yol bulunamaz
             if lb == float('inf'):
-                print(f"  -> Skipping subspace with lb=inf (no path possible)")
                 continue
 
             if subspace.computed_path is not None:
@@ -294,7 +292,6 @@ class FindIterBound(BasePathFindingAlgorithm):
                 # Apply diversity check using self.threshold
                 if path.similarity(self.threshold, result_set): # Assuming Path has a .similarity method
                     result_set.append(path)
-                    print(f"Path {len(result_set)} added to result: length = {path.length}")
 
                     # Alt-uzayı böl
                     new_subspaces = self._divide_subspace(subspace, path, i)
@@ -333,8 +330,6 @@ class FindIterBound(BasePathFindingAlgorithm):
                         tau = alpha * lb
 
 
-                print(f"Testing subspace with lb={lb:.2f}, tau={tau:.2f}")
-
                 # TestLB: tau'dan büyük mü test et
                 computed_path = self._test_lower_bound(subspace, graph_state, tau, dest)
 
@@ -343,21 +338,19 @@ class FindIterBound(BasePathFindingAlgorithm):
                     subspace.computed_path = computed_path
                     # Re-add to Q with its actual length for proper priority
                     heapq.heappush(Q, (computed_path.length, id(subspace), subspace))
-                    print(f"  -> Path found: length = {computed_path.length}")
                 else:
                     # tau'dan küçük yol yok, alt sınırı tau olarak güncelle
                     subspace.path_prefix.lb = tau
                     # Re-add to Q with updated LB
                     heapq.heappush(Q, (tau, id(subspace), subspace))
-                    print(f"  -> No path <= tau, updated lb to {tau:.2f}")
 
         # Infinite loop check
         if iteration_count >= max_iterations:
-            print(f"⚠️  Warning: Reached maximum iterations ({max_iterations})")
-            print(f"   Found {len(result_set)} paths out of requested {k}")
+            print(f"Reached maximum iterations ({max_iterations})")
+            print(f"Found {len(result_set)} paths out of requested {k}")
 
         # Queue boşsa ama k'ya ulaşmadıysak
         if len(result_set) < k and not Q:
-            print(f"⚠️  Warning: Only {len(result_set)} paths exist between {src} and {dest}")
+            print(f"Only {len(result_set)} paths exist between {src} and {dest}")
 
         return result_set

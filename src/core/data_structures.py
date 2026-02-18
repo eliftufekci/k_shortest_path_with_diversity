@@ -56,7 +56,9 @@ class Path:
         )
 
     def LB1(self, graph_state):
-        from .graph_utils import construct_partial_spt
+        from .graph_utils import construct_partial_spt 
+        # import here to avoid circular import
+
         tail = self.tail()
         if tail is None:
             return 0

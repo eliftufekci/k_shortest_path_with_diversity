@@ -35,6 +35,7 @@ class FindKSPD(BasePathFindingAlgorithm):
 
         shortest_path = dijkstra(self.graph, src, dest)
         if shortest_path is None:
+            print(f"No path exists between {src} and {dest}")
             return result_set
 
         result_set.append(shortest_path)

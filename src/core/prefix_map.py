@@ -1,3 +1,5 @@
+from typing import Tuple
+
 class PrefixMap:
     def __init__(self):
         self.map = {}

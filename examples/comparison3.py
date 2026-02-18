@@ -48,8 +48,10 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         dest = random.choice(reachable)
         node_pairs.append((src, dest))
 
-    iterbound_times, iterbound_num_paths = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with KSP")
     ksp_times, ksp_num_paths = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with Iterbound")
+    iterbound_times, iterbound_num_paths = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
 
     return (
         (np.average(ksp_times) if ksp_times else 0,

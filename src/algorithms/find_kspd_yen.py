@@ -101,6 +101,7 @@ class FindKSPD_Yen(BasePathFindingAlgorithm):
 
         P1 = self._dijkstra_simple(src, dest)
         if P1 is None:
+            print(f"No path exists between {src} and {dest}")
             return []
 
         result_set = [P1]
@@ -180,7 +181,5 @@ class FindKSPD_Yen(BasePathFindingAlgorithm):
             # Diversity kontrolü — sadece result_set eklemesi için
             if current_path.similarity(self.threshold, result_set):
                 result_set.append(current_path)
-                print(f"KSPD-Yen: result_set={len(result_set)}, "
-                    f"explored={self.number_of_paths_explored}")
 
         return result_set

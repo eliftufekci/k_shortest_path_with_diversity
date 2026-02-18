@@ -48,7 +48,9 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         dest = random.choice(reachable)
         node_pairs.append((src, dest))
 
+    print("working with KSPD")
     kspd_times, kspd_num_paths = run_algorithm(FindKSPD, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with KSPD_Minus")
     kspd_minus_times, kspd_minus_num_paths = run_algorithm(FindKSPD_Minus, G, diversity_threshold, k_to_find, node_pairs)
 
     return (

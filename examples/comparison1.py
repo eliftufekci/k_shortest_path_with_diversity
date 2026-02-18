@@ -49,8 +49,11 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         node_pairs.append((src, dest))
 
     # Get times and num_paths for each algorithm
+    print("working with KSPD")
     kspd_times, kspd_num_paths = run_algorithm(FindKSPD, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with KSPD_Minus")
     kspd_minus_times, kspd_minus_num_paths = run_algorithm(FindKSPD_Minus, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with KSPD_Yen")
     kspd_yen_times, kspd_yen_num_paths = run_algorithm(FindKSPD_Yen, G, diversity_threshold, k_to_find, node_pairs)
 
     # Calculate averages
@@ -80,9 +83,13 @@ def kspd_vs_kspd_minus_vs_kspd_yen():
     roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
     roadCOL_path     = "/graph-data/USA-road-d.COL.gr"
 
+    print("working on web-google graph")
     web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)
+    print("working on wiki-talk graph")
     wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)
+    print("working on roadFLA graph")
     roadFLA_result    = find_results_based_on_graph(roadFLA_path,    k_to_find, diversity_threshold)
+    print("working on roadCOL graph")
     roadCOL_result    = find_results_based_on_graph(roadCOL_path,    k_to_find, diversity_threshold)
 
     # Each result tuple: (kspd_result, kspd_minus_result, kspd_yen_result)

@@ -59,7 +59,9 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
         dest = random.choice(reachable)
         node_pairs.append((src, dest))
 
+    print("working with KSP")
     ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count, ksp_times, ksp_num_paths = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
+    print("working with Iterbound")
     iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count, iterbound_times, iterbound_num_paths = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
 
     return (
@@ -90,9 +92,13 @@ def ksp_vs_iterbound():
     roadFLA_path    = "/content/python-graph/graph-data/USA-road-d.FLA.gr"
     roadCOL_path    = "/content/python-graph/graph-data/USA-road-d.COL.gr"
 
+    print("working on web-google graph")
     web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)
-    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)
+    print("working on wiki-talk graph")
+    wiki_talk_result  = find_results_based_on_graph(wiki_talk_path,  k_to_find, diversity_threshold)    
+    print("working on roadFLA graph")
     roadFLA_result    = find_results_based_on_graph(roadFLA_path,    k_to_find, diversity_threshold)
+    print("working on roadCOL graph")
     roadCOL_result    = find_results_based_on_graph(roadCOL_path,    k_to_find, diversity_threshold)
 
     all_results = [web_google_result, wiki_talk_result, roadCOL_result, roadFLA_result]
