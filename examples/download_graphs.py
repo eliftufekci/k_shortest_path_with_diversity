@@ -37,8 +37,8 @@ def download_and_prepare_graphs():
     """WEB GOOGLE GRAPH"""
     _download_and_extract(
         url="https://snap.stanford.edu/data/web-Google.txt.gz",
-        filename_gz="/content/python-graph/graph-data/USA-road-d.FLA.gr/web-Google.txt.gz",
-        filename_out="/content/python-graph/graph-data/USA-road-d.FLA.gr/web-Google.txt",
+        filename_gz="/content/python-graph/graph-data/web-Google.txt.gz",
+        filename_out="/content/python-graph/graph-data/web-Google.txt",
         skip_lines=4
     )
 

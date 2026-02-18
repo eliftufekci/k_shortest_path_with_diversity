@@ -32,10 +32,6 @@ init_py_path = os.path.join(top_level_container_dir, "src", "algorithms", "__ini
 with open(init_py_path, 'r') as f:
     content = f.read()
 
-# Correct the import lines by removing '.py'
-content = content.replace("from .find_ksp.py import FindKSP", "from .find_ksp import FindKSP")
-content = content.replace("from .find_kspd_minus.py import FindKSPD_Minus", "from .find_kspd_minus import FindKSPD_Minus")
-
 with open(init_py_path, 'w') as f:
     f.write(content)
 
