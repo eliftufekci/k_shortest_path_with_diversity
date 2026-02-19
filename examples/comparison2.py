@@ -87,10 +87,10 @@ def ksp_vs_iterbound():
     k_to_find = 30
     diversity_threshold = 0.6 #not important
 
-    web_google_path = "/content/python-graph/graph-data/web-Google.txt"
-    wiki_talk_path  = "/content/python-graph/graph-data/wiki-Talk.txt"
-    roadFLA_path    = "/content/python-graph/graph-data/USA-road-d.FLA.gr"
-    roadCOL_path    = "/content/python-graph/graph-data/USA-road-d.COL.gr"
+    web_google_path = "/content/graph-data/web-Google.txt"
+    wiki_talk_path  = "/content/graph-data/wiki-Talk.txt"
+    roadFLA_path    = "/content/graph-data/USA-road-d.FLA.gr"
+    roadCOL_path    = "/content/graph-data/USA-road-d.COL.gr"
 
     print("working on web-google graph")
     web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)

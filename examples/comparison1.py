@@ -78,10 +78,10 @@ def kspd_vs_kspd_minus_vs_kspd_yen():
     k_to_find = 10
     diversity_threshold = 0.6
 
-    web_google_path  = "/graph-data/web-Google.txt"
-    wiki_talk_path   = "/graph-data/wiki-Talk.txt"
-    roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
-    roadCOL_path     = "/graph-data/USA-road-d.COL.gr"
+    web_google_path = "/content/graph-data/web-Google.txt"
+    wiki_talk_path  = "/content/graph-data/wiki-Talk.txt"
+    roadFLA_path    = "/content/graph-data/USA-road-d.FLA.gr"
+    roadCOL_path    = "/content/graph-data/USA-road-d.COL.gr"
 
     print("working on web-google graph")
     web_google_result = find_results_based_on_graph(web_google_path, k_to_find, diversity_threshold)

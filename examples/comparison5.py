@@ -66,7 +66,7 @@ def kspd_vs_kspd_minus_diff_t_values():
     k_to_find = 30
     diversity_threshold_list = [0.2, 0.4, 0.6, 0.8]
 
-    roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
+    roadFLA_path     = "/content/graph-data/USA-road-d.FLA.gr"
 
     all_results = []
 

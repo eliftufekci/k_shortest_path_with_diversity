@@ -66,7 +66,7 @@ def ksp_vs_iterbound_diff_k_values():
     k_list = [10, 20, 30, 40, 50]
     diversity_threshold = 0.6 #not important
 
-    roadFLA_path     = "/graph-data/USA-road-d.FLA.gr"
+    roadFLA_path     = "/content/graph-data/USA-road-d.FLA.gr"
 
     all_results = []
 
