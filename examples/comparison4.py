@@ -36,7 +36,7 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     GR = reverse(G)
 
     node_pairs = []
-    num_pairs = 1
+    num_pairs = 10
     for _ in range(num_pairs):
         src = random.choice(list(G.nodes()))
         reachable = list(nx.descendants(G, src))

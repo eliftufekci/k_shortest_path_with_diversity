@@ -16,8 +16,8 @@ from .download_graphs import download_and_prepare_graphs
 if __name__ == "__main__":
     download_and_prepare_graphs()
 
-    ksp_vs_iterbound()
+    # ksp_vs_iterbound()
     # ksp_vs_iterbound_diff_k_values()
     # kspd_vs_kspd_minus_vs_kspd_yen()
-    # kspd_vs_kspd_minus_diff_k_values()
+    kspd_vs_kspd_minus_diff_k_values()
     # kspd_vs_kspd_minus_diff_t_values()

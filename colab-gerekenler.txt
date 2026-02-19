@@ -8,7 +8,7 @@ import runpy
 # After cloning, the repository is located at /content/python-graph.
 # To make 'src' and 'examples' discoverable as top-level packages, we need to add
 # the root of the repository (/content/python-graph/) to sys.path.
-top_level_container_dir = "/content/python-graph/"
+top_level_container_dir = "/content/k_shortest_path_with_diversity/"
 
 # Add this directory to sys.path if it's not already there.
 # This allows Python to find 'src' and 'examples' as top-level packages.
