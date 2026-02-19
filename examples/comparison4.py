@@ -30,8 +30,13 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     G = nx.DiGraph()
     with open(filename) as f:
         for line in f:
-            u, v = map(int, line.split())
-            G.add_edge(u, v, weight=1)
+            if len(list(map(int, line.split()))) == 2:
+                u, v = map(int, line.split())
+                G.add_edge(u, v, weight=1)
+            else:
+                u, v, w = map(int, line.split())
+                G.add_edge(u, v, weight=w)
+
 
     GR = reverse(G)
 

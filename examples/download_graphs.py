@@ -19,12 +19,26 @@ def _download_and_extract(url, filename_gz, filename_out, skip_lines=0):
         print(f"Archive already exists, skipping download: {filename_gz}")
 
     print(f"Extracting: {filename_gz} -> {filename_out}")
+    is_gr_file = filename_out.endswith('.gr')
+
     with gzip.open(filename_gz, 'rb') as f_in:
         with open(filename_out, 'wb') as f_out:
-            for _ in range(skip_lines):
-                next(f_in)
-            for line_bytes in f_in:
-                f_out.write(line_bytes)
+            if is_gr_file:
+                for line_bytes in f_in:
+                    line = line_bytes.decode('utf-8').strip()
+                    if line.startswith('a'):  # Only write arc lines for .gr files
+                        f_out.write(line_bytes) # Keep original newline if present, or add if stripped
+            else:  # For .txt files or other generic files
+                # Skip the specified number of lines from the gzipped stream
+                for _ in range(skip_lines):
+                    try:
+                        next(f_in)
+                    except StopIteration:
+                        # Handle cases where the file might have fewer lines than skip_lines
+                        break
+                # Write the rest of the content
+                for line_bytes in f_in:
+                    f_out.write(line_bytes)
 
     os.remove(filename_gz)
     print(f"Removed archive: {filename_gz}")
