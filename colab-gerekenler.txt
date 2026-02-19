@@ -1,4 +1,4 @@
-!git clone https://github.com/eliftufekci/python-graph.git
+!git clone https://github.com/eliftufekci/k_shortest_path_with_diversity.git
 
 import sys
 import os
