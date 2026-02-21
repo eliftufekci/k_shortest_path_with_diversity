@@ -1,3 +1,5 @@
+import gc
+
 import networkx as nx
 import random
 import datetime
@@ -5,7 +7,6 @@ import numpy as np
 
 from . import draw_bar_chart
 from . import draw_distribution
-from src.core.graph_utils import reverse
 from src.algorithms import FindKSP, FindIterBound
 
 def average_hop_count(result):
@@ -44,10 +45,8 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
             u, v = map(int, line.split())
             G.add_edge(u, v, weight=1)
 
-    GR = reverse(G)
-
     node_pairs = []
-    num_pairs = 10
+    num_pairs = 1
     for _ in range(num_pairs):
         src = random.choice(list(G.nodes()))
         reachable = list(nx.descendants(G, src))
@@ -63,6 +62,9 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count, ksp_times, ksp_num_paths = run_algorithm(FindKSP, G, diversity_threshold, k_to_find, node_pairs)
     print("working with Iterbound")
     iterbound_avg_time, iterbound_avg_num_paths, iterbound_avg_hop_count, iterbound_times, iterbound_num_paths = run_algorithm(FindIterBound, G, diversity_threshold, k_to_find, node_pairs)
+
+    del G
+    gc.collect()
 
     return (
         (ksp_avg_time, ksp_avg_num_paths, ksp_avg_hop_count, ksp_times, ksp_num_paths),

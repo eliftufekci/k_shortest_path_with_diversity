@@ -2,7 +2,6 @@ import heapq
 from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, field
 
-
 class GraphState:
     def __init__(self, graph_reverse, destination):
         self.graph_reverse = graph_reverse

@@ -1,4 +1,3 @@
-import numpy as np
 import matplotlib.ticker as ticker
 import matplotlib.pyplot as plt
 

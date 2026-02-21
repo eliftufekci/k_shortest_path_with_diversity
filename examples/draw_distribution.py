@@ -1,4 +1,4 @@
-import seaborn as sns
+import seaborn as sb
 import matplotlib.pyplot as plt
 
 def draw_time_distribution(plot_configs):

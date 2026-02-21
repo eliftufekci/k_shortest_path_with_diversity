@@ -1,3 +1,5 @@
+import gc
+
 import networkx as nx
 import random
 import datetime
@@ -5,7 +7,6 @@ import numpy as np
 
 from . import draw_line_chart
 from . import draw_distribution
-from src.core.graph_utils import reverse
 from src.algorithms import FindKSPD, FindKSPD_Minus
 
 def run_algorithm(algorithm, G, threshold, k, node_pairs):
@@ -33,8 +34,6 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
             u, v = map(int, line.split())
             G.add_edge(u, v, weight=1)
 
-    GR = reverse(G)
-
     node_pairs = []
     num_pairs = 1
     for _ in range(num_pairs):
@@ -52,6 +51,9 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     kspd_times, kspd_num_paths = run_algorithm(FindKSPD, G, diversity_threshold, k_to_find, node_pairs)
     print("working with KSPD_Minus")
     kspd_minus_times, kspd_minus_num_paths = run_algorithm(FindKSPD_Minus, G, diversity_threshold, k_to_find, node_pairs)
+
+    del G
+    gc.collect()
 
     return (
         (np.average(kspd_times) if kspd_times else 0,

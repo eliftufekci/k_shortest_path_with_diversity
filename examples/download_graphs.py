@@ -2,7 +2,6 @@ import gzip
 import os
 from urllib.request import urlretrieve
 
-
 def _download_and_extract(url, filename_gz, filename_out, skip_lines=0):
     """
     Helper: dosya zaten varsa indir ve aç işlemini atla.
@@ -27,7 +26,9 @@ def _download_and_extract(url, filename_gz, filename_out, skip_lines=0):
                 for line_bytes in f_in:
                     line = line_bytes.decode('utf-8').strip()
                     if line.startswith('a'):  # Only write arc lines for .gr files
-                        f_out.write(line_bytes) # Keep original newline if present, or add if stripped
+                        updated_line = line[1:] + '\n'
+                        f_out.write(updated_line.encode('utf-8'))
+            # Keep original newline if present, or add if stripped
             else:  # For .txt files or other generic files
                 # Skip the specified number of lines from the gzipped stream
                 for _ in range(skip_lines):

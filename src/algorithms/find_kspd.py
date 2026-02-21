@@ -7,7 +7,6 @@ from ..core.data_structures import Path, GraphState
 from ..core.graph_utils import (
     reverse, 
     dijkstra,
-    construct_partial_spt
 )
 from ..core.prefix_map import PrefixMap
 

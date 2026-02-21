@@ -1,10 +1,13 @@
+import gc
+
 import networkx as nx
 import random
 import datetime
 import numpy as np
 
-from . import draw_bar_chart
-from src.core.graph_utils import reverse
+# Relative import yerine direkt import (aynı klasörde oldukları için)
+from .draw_bar_chart import draw_bar_chart
+from .draw_distribution import draw_time_distribution, draw_num_of_path_distribution
 from src.algorithms import FindKSPD, FindKSPD_Yen, FindKSPD_Minus
 
 def run_algorithm(algorithm, G, threshold, k, node_pairs):
@@ -33,10 +36,8 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
             u, v = map(int, line.split())
             G.add_edge(u, v, weight=1)
 
-    GR = reverse(G)
-
     node_pairs = []
-    num_pairs = 10
+    num_pairs = 1
     for _ in range(num_pairs):
         src = random.choice(list(G.nodes()))
         reachable = list(nx.descendants(G, src))
@@ -65,6 +66,9 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
 
     kspd_minus_avg_time = np.average(kspd_minus_times) if kspd_minus_times else 0
     kspd_minus_avg_num_paths = np.average(kspd_minus_num_paths) if kspd_minus_num_paths else 0
+
+    del G
+    gc.collect()
 
     # Return averages and the raw data for distributions
     return (
