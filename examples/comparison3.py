@@ -31,8 +31,15 @@ def find_results_based_on_graph(filename, k_to_find, diversity_threshold):
     G = nx.DiGraph()
     with open(filename) as f:
         for line in f:
-            u, v = map(int, line.split())
-            G.add_edge(u, v, weight=1)
+            parts = line.split()
+            if len(parts) == 3:  # Weighted graph (3 parçalı satır: kaynak, hedef, ağırlık)
+                u, v, weight = int(parts[0]), int(parts[1]), float(parts[2])
+                G.add_edge(u, v, weight=weight)
+            elif len(parts) == 2:  # Unweighted graph (2 parçalı satır: kaynak ve hedef)
+                u, v = map(int, parts)
+                G.add_edge(u, v, weight=1)  # Ağırlıksız kenarları varsayılan olarak '1' ağırlıkla ekle
+            else:
+                raise ValueError("Unexpected line format in graph file.")
 
     node_pairs = []
     num_pairs = 1
