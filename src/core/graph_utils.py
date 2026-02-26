@@ -1,3 +1,6 @@
+import itertools
+HEAP_COUNTER = itertools.count()
+
 import heapq
 import networkx as nx
 from typing import Optional, Tuple, Dict, List
@@ -49,7 +52,8 @@ def dijkstra(
             shortest_path.lb = shortest_path.length
             return shortest_path
 
-        for neighbor, data in graph[node].items():
+        for neighbor in sorted(graph[node]):
+            data = graph[node][neighbor]
             if neighbor not in visited:
                 new_cost = cost + data['weight']
                 heapq.heappush(heap, (new_cost, neighbor, path_list + [node]))
@@ -70,7 +74,8 @@ def construct_partial_spt(graph_state: GraphState, v: int) -> float:
         if not graph_state.isSettled[node]:
             graph_state.isSettled[node] = True
 
-            for neighbor, data in graph_state.graph_reverse[node].items():
+            for neighbor in sorted(graph_state.graph_reverse[node]):
+                data = graph_state.graph_reverse[node][neighbor]
                 if not graph_state.isSettled[neighbor]:
                     new_cost = cost + data['weight']
 

@@ -1,3 +1,6 @@
+import itertools
+HEAP_COUNTER = itertools.count()
+
 import heapq
 from typing import Dict, List, Optional, Tuple, Set
 from dataclasses import dataclass, field
@@ -29,12 +32,14 @@ class Path:
     cls: Optional[Tuple] = None
     is_active: bool = True
     cached_intersections: Dict[int, float] = field(default_factory=dict)
+    heap_order: int = field(default_factory=lambda: next(HEAP_COUNTER))
+    path_id: int = field(default_factory=lambda: next(HEAP_COUNTER))
 
     def __str__(self):
         return f"Route: {self.route}, Length: {self.length}, LB: {self.lb}, Class: {self.cls}, isActive: {self.isActive}"
 
     def __lt__(self, other: "Path") -> bool:
-        return (not self.is_active, self.lb) < (not other.is_active, other.lb)
+        return ((not self.is_active, self.lb, self.heap_order) < (not other.is_active, other.lb, other.heap_order))
 
     def tail(self) -> Optional[int]:
         return self.route[-1] if self.route else None
@@ -73,13 +78,13 @@ class Path:
 
         lb2 = 0
         for old_path in result_set:
-            if id(old_path) in self.cached_intersections:
-                intersection_length = self.cached_intersections[id(old_path)]
+            if old_path.path_id in self.cached_intersections:
+                intersection_length = self.cached_intersections[old_path.path_id]
 
             else:
                 common_edges = set(old_path.edges.keys()).intersection(set(self.edges.keys()))
                 intersection_length = sum(old_path.edges[e] for e in common_edges)
-                self.cached_intersections[id(old_path)] = intersection_length
+                self.cached_intersections[old_path.path_id] = intersection_length
 
             current_lb2 = intersection_length * (1 + 1 / threshold) - old_path.length
             lb2 = max(lb2, current_lb2)
