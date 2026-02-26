@@ -1,10 +1,14 @@
 import heapq
+import itertools
+from collections import defaultdict
 import networkx as nx
 from typing import List, Optional, Tuple, Set
 
 from .base import BasePathFindingAlgorithm
 from ..core.data_structures import Path, GraphState
 from ..core.graph_utils import dijkstra, reverse, construct_partial_spt
+
+HEAP_COUNTER = itertools.count()
 
 class Subspace:
     """
@@ -52,7 +56,7 @@ class FindIterBound(BasePathFindingAlgorithm):
         has_valid_neighbor = False
 
         # u'nun her geçerli komşusu için
-        for neighbor in self.graph[u]:
+        for neighbor in sorted(self.graph[u]):
             # Geçerli kenar mı kontrol et
             if neighbor in subspace.path_prefix.route:  # Döngü oluşturur
                 continue
@@ -142,7 +146,7 @@ class FindIterBound(BasePathFindingAlgorithm):
                 return path
 
             # Komşuları genişlet
-            for neighbor in self.graph[node]:
+            for neighbor in sorted(self.graph[node]):
                 # Geçerli kenar mı?
                 if neighbor in prefix_route:  # Döngü
                     continue
@@ -195,7 +199,7 @@ class FindIterBound(BasePathFindingAlgorithm):
                     new_prefix.length += computed_path.edges[(u, v)]
 
             # Bu düğümün TÜM alternatif kenarları için alt-uzay oluştur
-            for neighbor in self.graph[vertex]:
+            for neighbor in sorted(self.graph[vertex]):
                 # Sadece path'te kullanılmayan kenarlara bak
                 if neighbor != next_in_path and neighbor not in computed_path.route[:i+1]:
                     # Yeni alt-uzay: vertex'ten sonra next_in_path kenarını yasakla
@@ -265,7 +269,7 @@ class FindIterBound(BasePathFindingAlgorithm):
         initial_subspace.path_prefix.length = 0
         initial_subspace.computed_path = P0
 
-        heapq.heappush(Q, (P0.length, id(initial_subspace), initial_subspace))
+        heapq.heappush(Q, (P0.length, next(HEAP_COUNTER), initial_subspace))
 
         # 3. Sonuç listesi ve tau başlat
         result_set: List[Path] = []
@@ -309,7 +313,7 @@ class FindIterBound(BasePathFindingAlgorithm):
                         new_lb = max(new_lb, path.length)
 
                         new_sub.path_prefix.lb = new_lb
-                        heapq.heappush(Q, (new_lb, id(new_sub), new_sub))
+                        heapq.heappush(Q, (new_lb, next(HEAP_COUNTER), new_sub))
             else:
                 # Alt-uzayın en kısa yolu henüz hesaplanmamış
 
@@ -337,12 +341,12 @@ class FindIterBound(BasePathFindingAlgorithm):
                     # En kısa yol bulundu ve tau'dan küçük
                     subspace.computed_path = computed_path
                     # Re-add to Q with its actual length for proper priority
-                    heapq.heappush(Q, (computed_path.length, id(subspace), subspace))
+                    heapq.heappush(Q, (computed_path.length, next(HEAP_COUNTER), subspace))
                 else:
                     # tau'dan küçük yol yok, alt sınırı tau olarak güncelle
                     subspace.path_prefix.lb = tau
                     # Re-add to Q with updated LB
-                    heapq.heappush(Q, (tau, id(subspace), subspace))
+                    heapq.heappush(Q, (tau, next(HEAP_COUNTER), subspace))
 
         # Infinite loop check
         if iteration_count >= max_iterations:

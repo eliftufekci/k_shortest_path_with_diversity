@@ -1,5 +1,8 @@
 import heapq
 import networkx as nx
+import itertools
+HEAP_COUNTER = itertools.count()
+
 from typing import List, Optional, Tuple, Set
 
 from .base import BasePathFindingAlgorithm
@@ -42,7 +45,8 @@ class FindKSPD_Yen(BasePathFindingAlgorithm):
             if node in excluded_nodes:
                 continue
 
-            for neighbor, data in self.graph[node].items():
+            for neighbor in sorted(self.graph[node]):
+                data = self.graph[node][neighbor]
                 if neighbor in excluded_nodes:
                     continue
                 if (node, neighbor) in excluded_edges:
@@ -167,13 +171,13 @@ class FindKSPD_Yen(BasePathFindingAlgorithm):
                 total_path.length = root_path_obj.length + spur_path.length
                 total_path.lb = total_path.length
 
-                heapq.heappush(candidates, (total_path.lb, total_path))
+                heapq.heappush(candidates, (total_path.lb, next(HEAP_COUNTER), total_path))
 
         # İlk path'ten spur'ları üret
         generate_spurs(P1)
 
         while len(result_set) < k and candidates:
-            _, current_path = heapq.heappop(candidates)
+            _, _, current_path = heapq.heappop(candidates)
 
             accepted_paths.append(current_path)
             generate_spurs(current_path)

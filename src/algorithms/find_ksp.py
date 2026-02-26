@@ -1,3 +1,6 @@
+import itertools
+HEAP_COUNTER = itertools.count()
+
 from typing import Dict, List, Optional
 import heapq
 import networkx as nx
@@ -68,7 +71,7 @@ class FindKSP(BasePathFindingAlgorithm):
         ) -> None:
 
         for vertex in shortest_path.route[:-1]:
-            for neighbor in self.graph[vertex]:
+            for neighbor in sorted(self.graph[vertex]):
                 path = Path()
                 path.route = shortest_path.route[:shortest_path.route.index(vertex)+1]
 
@@ -99,9 +102,9 @@ class FindKSP(BasePathFindingAlgorithm):
                     heapq.heappush(lq[tail], path)
                     self.prefix_map.insert(path)
 
-                    if lq[tail] and id(lq[tail]) not in self.global_LQ_ids:
-                        heapq.heappush(global_pq, ((not lq[tail][0].is_active, lq[tail][0].lb), id(lq[tail]), lq[tail]))
-                        self.global_LQ_ids.add(id(lq[tail]))
+                    if lq[tail] and next(HEAP_COUNTER) not in self.global_LQ_ids:
+                        heapq.heappush(global_pq, ((not lq[tail][0].is_active, lq[tail][0].lb), next(HEAP_COUNTER), lq[tail]))
+                        self.global_LQ_ids.add(next(HEAP_COUNTER))
 
 
     def _extend_path(
@@ -120,7 +123,7 @@ class FindKSP(BasePathFindingAlgorithm):
                 if p.cls == path.cls and p.length >= path.length and p.is_active:
                     p.is_active = False
 
-        for neighbor in self.graph[tail]:
+        for neighbor in sorted(self.graph[tail]):
             if neighbor not in path.route and neighbor != graph_state.parent.get(tail):
                 new_path = path.copy()
                 new_path.route.append(neighbor)
@@ -244,11 +247,11 @@ class FindKSP(BasePathFindingAlgorithm):
 
             if current_path is None:
                 if current_LQ:
-                    heapq.heappush(global_pq, ((not current_LQ[0].is_active, current_LQ[0].lb), id(current_LQ), current_LQ))
+                    heapq.heappush(global_pq, ((not current_LQ[0].is_active, current_LQ[0].lb), next(HEAP_COUNTER), current_LQ))
                 continue
 
             if current_LQ:
-                heapq.heappush(global_pq, ((not current_LQ[0].is_active, current_LQ[0].lb), id(current_LQ), current_LQ))
+                    heapq.heappush(global_pq, ((not current_LQ[0].is_active, current_LQ[0].lb), next(HEAP_COUNTER), current_LQ))
 
             while current_path.tail() != dest:
                 LB2 = current_path.LB2(threshold=self.threshold, result_set=result_set)
