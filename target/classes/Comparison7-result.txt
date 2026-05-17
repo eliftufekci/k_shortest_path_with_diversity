@@ -1,0 +1,267 @@
+"C:\Program Files\Java\jdk-17\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.2\lib\idea_rt.jar=57120" -Dfile.encoding=UTF-8 -classpath C:\Users\elif4\IdeaProjects\TKSPD\target\classes org.example.Comparison7 -Xmx12g
+=== Figure 12: Vary similarity metric for KSPD ===
+      FindKSPD vs FindKSPD-
+      Metrics: Sim1–Sim5 | k=10, τ=0.6
+
+
+╔════════════════════════════════════════════════════╗
+║  Graph: WikiTalk                                   ║
+╚════════════════════════════════════════════════════╝
+  Loaded 20 pairs from graph-data/pairs/WikiTalk.pairs
+Nodes: 2394385  |  Pairs loaded: 20
+
+  ── Metric = SIM1, k = 10, τ = 0.6 ──
+  Running FindKSPD(SIM1) for SRC: 56271, DEST: 329082
+  Running FindKSPD(SIM1) for SRC: 17017, DEST: 169025
+  Running FindKSPD(SIM1) for SRC: 109972, DEST: 855271
+  Running FindKSPD(SIM1) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(SIM1) for SRC: 27733, DEST: 219350
+  Running FindKSPD(SIM1) for SRC: 42307, DEST: 887799
+  Running FindKSPD(SIM1) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(SIM1) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(SIM1) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(SIM1) for SRC: 23560, DEST: 345119
+  Running FindKSPD(SIM1) for SRC: 23396, DEST: 33645
+  Running FindKSPD(SIM1) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(SIM1) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(SIM1) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(SIM1) for SRC: 764164, DEST: 764196
+  Running FindKSPD(SIM1) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(SIM1) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(SIM1) for SRC: 6534, DEST: 257993
+  Running FindKSPD(SIM1) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(SIM1) for SRC: 741491, DEST: 43962
+  Running FindKSPD-(SIM1) for SRC: 56271, DEST: 329082
+  Running FindKSPD-(SIM1) for SRC: 17017, DEST: 169025
+  Running FindKSPD-(SIM1) for SRC: 109972, DEST: 855271
+  Running FindKSPD-(SIM1) for SRC: 140953, DEST: 1055017
+  Running FindKSPD-(SIM1) for SRC: 27733, DEST: 219350
+  Running FindKSPD-(SIM1) for SRC: 42307, DEST: 887799
+  Running FindKSPD-(SIM1) for SRC: 170072, DEST: 1412806
+  Running FindKSPD-(SIM1) for SRC: 134197, DEST: 1347585
+  Running FindKSPD-(SIM1) for SRC: 88528, DEST: 1611734
+  Running FindKSPD-(SIM1) for SRC: 23560, DEST: 345119
+  Running FindKSPD-(SIM1) for SRC: 23396, DEST: 33645
+  Running FindKSPD-(SIM1) for SRC: 471518, DEST: 2291419
+  Running FindKSPD-(SIM1) for SRC: 496426, DEST: 1117051
+  Running FindKSPD-(SIM1) for SRC: 289509, DEST: 1109683
+  Running FindKSPD-(SIM1) for SRC: 764164, DEST: 764196
+  Running FindKSPD-(SIM1) for SRC: 21215, DEST: 1470098
+  Running FindKSPD-(SIM1) for SRC: 172785, DEST: 2146925
+  Running FindKSPD-(SIM1) for SRC: 6534, DEST: 257993
+  Running FindKSPD-(SIM1) for SRC: 88666, DEST: 1017139
+  Running FindKSPD-(SIM1) for SRC: 741491, DEST: 43962
+
+  ── Metric = SIM4, k = 10, τ = 0.6 ──
+  Running FindKSPD(SIM4) for SRC: 56271, DEST: 329082
+  Running FindKSPD(SIM4) for SRC: 17017, DEST: 169025
+  Running FindKSPD(SIM4) for SRC: 109972, DEST: 855271
+  Running FindKSPD(SIM4) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(SIM4) for SRC: 27733, DEST: 219350
+  Running FindKSPD(SIM4) for SRC: 42307, DEST: 887799
+  Running FindKSPD(SIM4) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(SIM4) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(SIM4) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(SIM4) for SRC: 23560, DEST: 345119
+  Running FindKSPD(SIM4) for SRC: 23396, DEST: 33645
+  Running FindKSPD(SIM4) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(SIM4) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(SIM4) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(SIM4) for SRC: 764164, DEST: 764196
+  Running FindKSPD(SIM4) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(SIM4) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(SIM4) for SRC: 6534, DEST: 257993
+  Running FindKSPD(SIM4) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(SIM4) for SRC: 741491, DEST: 43962
+  Running FindKSPD-(SIM4) for SRC: 56271, DEST: 329082
+  Running FindKSPD-(SIM4) for SRC: 17017, DEST: 169025
+  Running FindKSPD-(SIM4) for SRC: 109972, DEST: 855271
+  Running FindKSPD-(SIM4) for SRC: 140953, DEST: 1055017
+  Running FindKSPD-(SIM4) for SRC: 27733, DEST: 219350
+  Running FindKSPD-(SIM4) for SRC: 42307, DEST: 887799
+  Running FindKSPD-(SIM4) for SRC: 170072, DEST: 1412806
+  Running FindKSPD-(SIM4) for SRC: 134197, DEST: 1347585
+  Running FindKSPD-(SIM4) for SRC: 88528, DEST: 1611734
+  Running FindKSPD-(SIM4) for SRC: 23560, DEST: 345119
+  Running FindKSPD-(SIM4) for SRC: 23396, DEST: 33645
+  Running FindKSPD-(SIM4) for SRC: 471518, DEST: 2291419
+  Running FindKSPD-(SIM4) for SRC: 496426, DEST: 1117051
+  Running FindKSPD-(SIM4) for SRC: 289509, DEST: 1109683
+  Running FindKSPD-(SIM4) for SRC: 764164, DEST: 764196
+  Running FindKSPD-(SIM4) for SRC: 21215, DEST: 1470098
+  Running FindKSPD-(SIM4) for SRC: 172785, DEST: 2146925
+  Running FindKSPD-(SIM4) for SRC: 6534, DEST: 257993
+  Running FindKSPD-(SIM4) for SRC: 88666, DEST: 1017139
+  Running FindKSPD-(SIM4) for SRC: 741491, DEST: 43962
+
+  ── Metric = SIM3, k = 10, τ = 0.6 ──
+  Running FindKSPD(SIM3) for SRC: 56271, DEST: 329082
+  Running FindKSPD(SIM3) for SRC: 17017, DEST: 169025
+  Running FindKSPD(SIM3) for SRC: 109972, DEST: 855271
+  Running FindKSPD(SIM3) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(SIM3) for SRC: 27733, DEST: 219350
+  Running FindKSPD(SIM3) for SRC: 42307, DEST: 887799
+  Running FindKSPD(SIM3) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(SIM3) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(SIM3) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(SIM3) for SRC: 23560, DEST: 345119
+  Running FindKSPD(SIM3) for SRC: 23396, DEST: 33645
+  Running FindKSPD(SIM3) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(SIM3) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(SIM3) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(SIM3) for SRC: 764164, DEST: 764196
+  Running FindKSPD(SIM3) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(SIM3) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(SIM3) for SRC: 6534, DEST: 257993
+  Running FindKSPD(SIM3) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(SIM3) for SRC: 741491, DEST: 43962
+  Running FindKSPD-(SIM3) for SRC: 56271, DEST: 329082
+  Running FindKSPD-(SIM3) for SRC: 17017, DEST: 169025
+  Running FindKSPD-(SIM3) for SRC: 109972, DEST: 855271
+  Running FindKSPD-(SIM3) for SRC: 140953, DEST: 1055017
+  Running FindKSPD-(SIM3) for SRC: 27733, DEST: 219350
+  Running FindKSPD-(SIM3) for SRC: 42307, DEST: 887799
+  Running FindKSPD-(SIM3) for SRC: 170072, DEST: 1412806
+  Running FindKSPD-(SIM3) for SRC: 134197, DEST: 1347585
+  Running FindKSPD-(SIM3) for SRC: 88528, DEST: 1611734
+  Running FindKSPD-(SIM3) for SRC: 23560, DEST: 345119
+  Running FindKSPD-(SIM3) for SRC: 23396, DEST: 33645
+  Running FindKSPD-(SIM3) for SRC: 471518, DEST: 2291419
+  Running FindKSPD-(SIM3) for SRC: 496426, DEST: 1117051
+  Running FindKSPD-(SIM3) for SRC: 289509, DEST: 1109683
+  Running FindKSPD-(SIM3) for SRC: 764164, DEST: 764196
+  Running FindKSPD-(SIM3) for SRC: 21215, DEST: 1470098
+  Running FindKSPD-(SIM3) for SRC: 172785, DEST: 2146925
+  Running FindKSPD-(SIM3) for SRC: 6534, DEST: 257993
+  Running FindKSPD-(SIM3) for SRC: 88666, DEST: 1017139
+  Running FindKSPD-(SIM3) for SRC: 741491, DEST: 43962
+
+  ── Metric = SIM2, k = 10, τ = 0.6 ──
+  Running FindKSPD(SIM2) for SRC: 56271, DEST: 329082
+  Running FindKSPD(SIM2) for SRC: 17017, DEST: 169025
+  Running FindKSPD(SIM2) for SRC: 109972, DEST: 855271
+  Running FindKSPD(SIM2) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(SIM2) for SRC: 27733, DEST: 219350
+  Running FindKSPD(SIM2) for SRC: 42307, DEST: 887799
+  Running FindKSPD(SIM2) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(SIM2) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(SIM2) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(SIM2) for SRC: 23560, DEST: 345119
+  Running FindKSPD(SIM2) for SRC: 23396, DEST: 33645
+  Running FindKSPD(SIM2) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(SIM2) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(SIM2) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(SIM2) for SRC: 764164, DEST: 764196
+  Running FindKSPD(SIM2) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(SIM2) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(SIM2) for SRC: 6534, DEST: 257993
+  Running FindKSPD(SIM2) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(SIM2) for SRC: 741491, DEST: 43962
+  Running FindKSPD-(SIM2) for SRC: 56271, DEST: 329082
+  Running FindKSPD-(SIM2) for SRC: 17017, DEST: 169025
+  Running FindKSPD-(SIM2) for SRC: 109972, DEST: 855271
+  Running FindKSPD-(SIM2) for SRC: 140953, DEST: 1055017
+  Running FindKSPD-(SIM2) for SRC: 27733, DEST: 219350
+  Running FindKSPD-(SIM2) for SRC: 42307, DEST: 887799
+  Running FindKSPD-(SIM2) for SRC: 170072, DEST: 1412806
+  Running FindKSPD-(SIM2) for SRC: 134197, DEST: 1347585
+  Running FindKSPD-(SIM2) for SRC: 88528, DEST: 1611734
+  Running FindKSPD-(SIM2) for SRC: 23560, DEST: 345119
+  Running FindKSPD-(SIM2) for SRC: 23396, DEST: 33645
+  Running FindKSPD-(SIM2) for SRC: 471518, DEST: 2291419
+  Running FindKSPD-(SIM2) for SRC: 496426, DEST: 1117051
+  Running FindKSPD-(SIM2) for SRC: 289509, DEST: 1109683
+  Running FindKSPD-(SIM2) for SRC: 764164, DEST: 764196
+  Running FindKSPD-(SIM2) for SRC: 21215, DEST: 1470098
+  Running FindKSPD-(SIM2) for SRC: 172785, DEST: 2146925
+  Running FindKSPD-(SIM2) for SRC: 6534, DEST: 257993
+  Running FindKSPD-(SIM2) for SRC: 88666, DEST: 1017139
+  Running FindKSPD-(SIM2) for SRC: 741491, DEST: 43962
+
+  ── Metric = SIM5, k = 10, τ = 0.6 ──
+  Running FindKSPD(SIM5) for SRC: 56271, DEST: 329082
+  Running FindKSPD(SIM5) for SRC: 17017, DEST: 169025
+  Running FindKSPD(SIM5) for SRC: 109972, DEST: 855271
+  Running FindKSPD(SIM5) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(SIM5) for SRC: 27733, DEST: 219350
+  Running FindKSPD(SIM5) for SRC: 42307, DEST: 887799
+  Running FindKSPD(SIM5) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(SIM5) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(SIM5) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(SIM5) for SRC: 23560, DEST: 345119
+  Running FindKSPD(SIM5) for SRC: 23396, DEST: 33645
+  Running FindKSPD(SIM5) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(SIM5) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(SIM5) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(SIM5) for SRC: 764164, DEST: 764196
+  Running FindKSPD(SIM5) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(SIM5) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(SIM5) for SRC: 6534, DEST: 257993
+  Running FindKSPD(SIM5) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(SIM5) for SRC: 741491, DEST: 43962
+  Running FindKSPD-(SIM5) for SRC: 56271, DEST: 329082
+  Running FindKSPD-(SIM5) for SRC: 17017, DEST: 169025
+  Running FindKSPD-(SIM5) for SRC: 109972, DEST: 855271
+  Running FindKSPD-(SIM5) for SRC: 140953, DEST: 1055017
+  Running FindKSPD-(SIM5) for SRC: 27733, DEST: 219350
+  Running FindKSPD-(SIM5) for SRC: 42307, DEST: 887799
+  Running FindKSPD-(SIM5) for SRC: 170072, DEST: 1412806
+  Running FindKSPD-(SIM5) for SRC: 134197, DEST: 1347585
+  Running FindKSPD-(SIM5) for SRC: 88528, DEST: 1611734
+  Running FindKSPD-(SIM5) for SRC: 23560, DEST: 345119
+  Running FindKSPD-(SIM5) for SRC: 23396, DEST: 33645
+  Running FindKSPD-(SIM5) for SRC: 471518, DEST: 2291419
+  Running FindKSPD-(SIM5) for SRC: 496426, DEST: 1117051
+  Running FindKSPD-(SIM5) for SRC: 289509, DEST: 1109683
+  Running FindKSPD-(SIM5) for SRC: 764164, DEST: 764196
+  Running FindKSPD-(SIM5) for SRC: 21215, DEST: 1470098
+  Running FindKSPD-(SIM5) for SRC: 172785, DEST: 2146925
+  Running FindKSPD-(SIM5) for SRC: 6534, DEST: 257993
+  Running FindKSPD-(SIM5) for SRC: 88666, DEST: 1017139
+  Running FindKSPD-(SIM5) for SRC: 741491, DEST: 43962
+
+
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  RESULTS: WikiTalk — Vary Similarity Metric (k=10, τ=0,6)            ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+  Metric   | Algorithm          | Avg Time(s)    | Avg Paths
+  --------------------------------------------------------------
+  SIM1     | FindKSPD           |         5,9003 |         9,10
+  SIM1     | FindKSPD-          |         5,7694 |         9,10
+  --------------------------------------------------------------
+  SIM4     | FindKSPD           |         7,1822 |         9,10
+  SIM4     | FindKSPD-          |         8,4915 |         9,10
+  --------------------------------------------------------------
+  SIM3     | FindKSPD           |         7,6772 |         9,45
+  SIM3     | FindKSPD-          |         7,1802 |         9,45
+  --------------------------------------------------------------
+  SIM2     | FindKSPD           |         7,9408 |         9,45
+  SIM2     | FindKSPD-          |         7,8603 |         9,45
+  --------------------------------------------------------------
+  SIM5     | FindKSPD           |         7,3171 |        11,60
+  SIM5     | FindKSPD-          |         7,9584 |        11,60
+  --------------------------------------------------------------
+
+  ── Per-metric summary for WikiTalk ──
+  SIM1 FindKSPD  runtime = [6.4504458, 7.1368858, 6.5745868, 6.0165892, 5.1190733, 6.7653159, 6.382415, 5.516374, 6.4019919, 5.7263505, 5.8630871, 6.4836945, 3.1850792, 6.0070844, 3.3761463, 6.8419467, 5.6880866, 5.7642566, 6.4654055, 6.2410938]
+  SIM1 FindKSPD- runtime = [5.1357016, 5.8527947, 6.4773075, 5.8759961, 4.7706819, 6.4825764, 6.4542149, 5.4637084, 6.3836941, 5.7142429, 5.9564296, 6.251208, 3.21385, 5.916243, 3.197752, 7.7186501, 5.6922381, 5.7487732, 6.5551064, 6.5271811]
+  SIM1 FindKSPD  paths   = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM1 FindKSPD- paths   = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM4 FindKSPD  runtime = [5.0170174, 5.7871872, 6.6800053, 6.0299228, 4.6537158, 6.2988228, 6.4901982, 5.5122034, 6.4298346, 5.8699711, 6.0130879, 6.296733, 3.1731882, 7.7962402, 4.0202672, 9.3128615, 11.4704197, 11.4035807, 12.7086082, 12.6795615]
+  SIM4 FindKSPD- runtime = [9.8388266, 11.0649179, 12.6434837, 11.9846684, 9.293809, 12.0889532, 12.4927537, 7.428858, 8.6624991, 6.7078417, 7.1697185, 7.6820844, 3.8184724, 7.3152608, 3.9455794, 7.9927192, 6.7075286, 7.3024218, 7.8591165, 7.8296111]
+  SIM4 FindKSPD  paths   = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM4 FindKSPD- paths   = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM3 FindKSPD  runtime = [6.4185431, 7.4580136, 9.6128382, 8.3683039, 6.203854, 8.7996297, 9.1776363, 7.4938556, 8.4137537, 7.4015122, 8.9867042, 8.8570476, 4.3097891, 8.5636576, 4.4924158, 8.3382432, 7.7151537, 6.9506483, 7.9863263, 7.9967681]
+  SIM3 FindKSPD- runtime = [6.4144566, 6.6852434, 8.3017582, 7.2545017, 5.9720767, 8.7113804, 7.7079374, 6.484442, 7.8128013, 6.9124268, 7.1528402, 8.2218348, 3.9302999, 6.9433841, 3.9555886, 8.969833, 7.1849237, 7.1493442, 9.1744536, 8.6647338]
+  SIM3 FindKSPD  paths   = [10, 10, 10, 10, 10, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM3 FindKSPD- paths   = [10, 10, 10, 10, 10, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM2 FindKSPD  runtime = [6.8809069, 8.1220436, 8.6144521, 8.3090719, 6.471592, 8.755406, 8.8282328, 7.3025972, 8.2907563, 7.8671781, 8.7888479, 9.0479057, 4.3554762, 8.627084, 4.4150026, 9.4676224, 8.5196118, 8.1012746, 9.0975984, 8.953588]
+  SIM2 FindKSPD- runtime = [7.0720678, 7.9043152, 8.9020072, 8.0792839, 6.3312791, 8.7255396, 9.2171647, 7.3603976, 9.1014252, 8.1433301, 8.6260099, 8.866339, 4.4312317, 8.4912469, 4.3623297, 8.7717959, 7.3865268, 8.3555101, 8.9466886, 8.1319033]
+  SIM2 FindKSPD  paths   = [10, 10, 10, 10, 10, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM2 FindKSPD- paths   = [10, 10, 10, 10, 10, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM5 FindKSPD  runtime = [7.7828364, 8.1017663, 8.841154, 8.1507984, 7.5463153, 8.0325841, 8.1798619, 7.3673306, 9.4987672, 6.1693269, 6.0131974, 6.2084893, 4.9412966, 7.2843999, 3.8583239, 8.4173728, 6.888984, 7.1890861, 8.1196783, 7.7497995]
+  SIM5 FindKSPD- runtime = [6.3131676, 7.0428494, 8.1017305, 7.3209475, 7.313952, 9.2540953, 8.621033, 7.5244044, 9.0100262, 7.9487242, 8.6205662, 9.2802632, 4.6385959, 8.8978244, 4.5079263, 9.9306021, 7.4929675, 9.5047527, 8.8851311, 8.958187]
+  SIM5 FindKSPD  paths   = [16, 10, 10, 10, 47, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+  SIM5 FindKSPD- paths   = [16, 10, 10, 10, 47, 10, 10, 10, 14, 10, 13, 10, 1, 10, 1, 10, 10, 10, 10, 10]
+
+Process finished with exit code 0

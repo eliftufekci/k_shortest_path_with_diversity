@@ -1,0 +1,285 @@
+"C:\Program Files\Java\jdk-17\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.2\lib\idea_rt.jar=60760" -Dfile.encoding=UTF-8 -classpath C:\Users\elif4\IdeaProjects\TKSPD\target\classes org.example.Comparison1 -Xmx12g
+=== Figure 6: KSP Comparison — FindKSPD (t=1.0) vs Iterbound ===
+      4 Graphs  |  20 pairs each  |  k=30
+
+
+╔════════════════════════════════════════════════════╗
+║  Graph: web-Google                                 ║
+╚════════════════════════════════════════════════════╝
+Loading graph from: graph-data/web-Google.txt
+  Loaded 20 pairs from graph-data/pairs/web-Google.pairs
+Nodes: 875713  |  Pairs loaded: 20
+
+  -- FindKSPD (t=1.0) --
+  Running FindKSPD(t=1) for SRC: 167575, DEST: 466578
+  Running FindKSPD(t=1) for SRC: 515811, DEST: 42477
+  Running FindKSPD(t=1) for SRC: 457551, DEST: 123131
+  Running FindKSPD(t=1) for SRC: 556092, DEST: 883196
+  Running FindKSPD(t=1) for SRC: 192188, DEST: 100650
+  Running FindKSPD(t=1) for SRC: 2910, DEST: 819005
+  Running FindKSPD(t=1) for SRC: 813172, DEST: 276577
+  Running FindKSPD(t=1) for SRC: 591329, DEST: 878694
+  Running FindKSPD(t=1) for SRC: 467421, DEST: 337875
+  Running FindKSPD(t=1) for SRC: 145510, DEST: 419019
+  Running FindKSPD(t=1) for SRC: 564624, DEST: 324404
+  Running FindKSPD(t=1) for SRC: 168644, DEST: 488802
+  Running FindKSPD(t=1) for SRC: 572585, DEST: 164229
+  Running FindKSPD(t=1) for SRC: 633820, DEST: 758940
+  Running FindKSPD(t=1) for SRC: 436288, DEST: 822248
+  Running FindKSPD(t=1) for SRC: 58704, DEST: 711419
+  Running FindKSPD(t=1) for SRC: 318023, DEST: 751652
+  Running FindKSPD(t=1) for SRC: 308412, DEST: 422235
+  Running FindKSPD(t=1) for SRC: 810576, DEST: 408653
+  Running FindKSPD(t=1) for SRC: 328808, DEST: 14187
+
+  -- Iterbound --
+  Running Iterbound for SRC: 167575, DEST: 466578
+  Running Iterbound for SRC: 515811, DEST: 42477
+  Running Iterbound for SRC: 457551, DEST: 123131
+  Running Iterbound for SRC: 556092, DEST: 883196
+  Running Iterbound for SRC: 192188, DEST: 100650
+  Running Iterbound for SRC: 2910, DEST: 819005
+  Running Iterbound for SRC: 813172, DEST: 276577
+  Running Iterbound for SRC: 591329, DEST: 878694
+  Running Iterbound for SRC: 467421, DEST: 337875
+  Running Iterbound for SRC: 145510, DEST: 419019
+  Running Iterbound for SRC: 564624, DEST: 324404
+  Running Iterbound for SRC: 168644, DEST: 488802
+  Running Iterbound for SRC: 572585, DEST: 164229
+  Running Iterbound for SRC: 633820, DEST: 758940
+  Running Iterbound for SRC: 436288, DEST: 822248
+  Running Iterbound for SRC: 58704, DEST: 711419
+  Running Iterbound for SRC: 318023, DEST: 751652
+  Running Iterbound for SRC: 308412, DEST: 422235
+  Running Iterbound for SRC: 810576, DEST: 408653
+  Running Iterbound for SRC: 328808, DEST: 14187
+
+  ── Result for web-Google (k=30) ──
+  Algorithm          | Avg Time(s)  | Avg Paths
+  ----------------------------------------------
+  FindKSPD(t=1)      |       4,9444 |      20,20
+  Iterbound          |       5,0533 |      57,00
+
+  ── Per-pair lists for web-Google ──
+  web-Google - FindKSPD runtime = [6.3267358, 6.4186703, 5.5917458, 3.8304894, 5.1197578, 3.7572113, 3.5172061, 5.7406931, 3.4180864, 6.3992317, 5.7300484, 5.8585987, 5.3742329, 5.0823742, 5.2605991, 5.2601357, 3.6569077, 3.7463908, 3.3820582, 5.4163693]
+  web-Google - Iterbound runtime = [5.5305849, 6.2231628, 5.1570648, 3.7835721, 5.2328732, 3.5559921, 3.4769829, 5.7109197, 3.9060625, 6.531755, 5.8603429, 6.6608284, 6.1368723, 6.1793997, 5.3462312, 5.6462484, 3.4906014, 3.6529775, 3.5792726, 5.404988]
+  web-Google - FindKSPD num of paths = [30, 30, 30, 2, 30, 5, 1, 30, 1, 30, 30, 30, 30, 30, 30, 30, 2, 1, 2, 30]
+  web-Google - Iterbound num of paths = [63, 65, 152, 16, 59, 21, 1, 65, 1, 59, 67, 122, 76, 145, 62, 87, 10, 1, 2, 66]
+
+╔════════════════════════════════════════════════════╗
+║  Graph: RoadCOL                                    ║
+╚════════════════════════════════════════════════════╝
+Loading graph from: graph-data/RoadCOL.gr
+  Loaded 20 pairs from graph-data/pairs/RoadCOL.pairs
+Nodes: 435666  |  Pairs loaded: 20
+
+  -- FindKSPD (t=1.0) --
+  Running FindKSPD(t=1) for SRC: 132853, DEST: 198883
+  Running FindKSPD(t=1) for SRC: 323831, DEST: 131947
+  Running FindKSPD(t=1) for SRC: 321989, DEST: 294935
+  Running FindKSPD(t=1) for SRC: 337421, DEST: 197396
+  Running FindKSPD(t=1) for SRC: 271044, DEST: 68845
+  Running FindKSPD(t=1) for SRC: 392146, DEST: 148541
+  Running FindKSPD(t=1) for SRC: 350158, DEST: 86429
+  Running FindKSPD(t=1) for SRC: 94382, DEST: 110038
+  Running FindKSPD(t=1) for SRC: 191645, DEST: 218435
+  Running FindKSPD(t=1) for SRC: 33650, DEST: 100410
+  Running FindKSPD(t=1) for SRC: 238752, DEST: 14779
+  Running FindKSPD(t=1) for SRC: 239662, DEST: 376857
+  Running FindKSPD(t=1) for SRC: 189710, DEST: 119886
+  Running FindKSPD(t=1) for SRC: 202302, DEST: 401344
+  Running FindKSPD(t=1) for SRC: 145306, DEST: 34817
+  Running FindKSPD(t=1) for SRC: 291021, DEST: 257201
+  Running FindKSPD(t=1) for SRC: 429451, DEST: 244808
+  Running FindKSPD(t=1) for SRC: 151934, DEST: 416396
+  Running FindKSPD(t=1) for SRC: 390440, DEST: 18064
+  Running FindKSPD(t=1) for SRC: 237647, DEST: 197749
+
+  -- Iterbound --
+  Running Iterbound for SRC: 132853, DEST: 198883
+  Running Iterbound for SRC: 323831, DEST: 131947
+  Running Iterbound for SRC: 321989, DEST: 294935
+  Running Iterbound for SRC: 337421, DEST: 197396
+  Running Iterbound for SRC: 271044, DEST: 68845
+  Running Iterbound for SRC: 392146, DEST: 148541
+  Running Iterbound for SRC: 350158, DEST: 86429
+  Running Iterbound for SRC: 94382, DEST: 110038
+  Running Iterbound for SRC: 191645, DEST: 218435
+  Running Iterbound for SRC: 33650, DEST: 100410
+  Running Iterbound for SRC: 238752, DEST: 14779
+  Running Iterbound for SRC: 239662, DEST: 376857
+  Running Iterbound for SRC: 189710, DEST: 119886
+  Running Iterbound for SRC: 202302, DEST: 401344
+  Running Iterbound for SRC: 145306, DEST: 34817
+  Running Iterbound for SRC: 291021, DEST: 257201
+  Running Iterbound for SRC: 429451, DEST: 244808
+  Running Iterbound for SRC: 151934, DEST: 416396
+  Running Iterbound for SRC: 390440, DEST: 18064
+  Running Iterbound for SRC: 237647, DEST: 197749
+
+  ── Result for RoadCOL (k=30) ──
+  Algorithm          | Avg Time(s)  | Avg Paths
+  ----------------------------------------------
+  FindKSPD(t=1)      |       1,3721 |      30,00
+  Iterbound          |       1,7336 |      65,50
+
+  ── Per-pair lists for RoadCOL ──
+  RoadCOL - FindKSPD runtime = [1.4069428, 1.1173642, 0.2934809, 1.5450344, 2.319225, 1.2134223, 1.892647, 1.9082743, 1.5098152, 0.337002, 0.9799292, 1.6868966, 1.3133511, 0.7080396, 0.7319344, 1.624178, 4.1946416, 1.314285, 0.321357, 1.0243196]
+  RoadCOL - Iterbound runtime = [1.0142239, 1.4267978, 0.2684546, 1.3010375, 3.077764, 1.6030246, 2.0978653, 2.742354, 1.648661, 0.3920731, 1.1321591, 2.5623649, 1.5247118, 0.9642563, 0.7331511, 1.5499375, 6.6404561, 2.3306121, 0.389071, 1.2733262]
+  RoadCOL - FindKSPD num of paths = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+  RoadCOL - Iterbound num of paths = [59, 59, 69, 59, 61, 61, 61, 63, 61, 81, 64, 60, 66, 60, 67, 84, 59, 97, 60, 59]
+
+╔════════════════════════════════════════════════════╗
+║  Graph: RoadFLA                                    ║
+╚════════════════════════════════════════════════════╝
+Loading graph from: graph-data/RoadFLA.gr
+  Loaded 20 pairs from graph-data/pairs/RoadFLA.pairs
+Nodes: 1070376  |  Pairs loaded: 20
+
+  -- FindKSPD (t=1.0) --
+  Running FindKSPD(t=1) for SRC: 752552, DEST: 721898
+  Running FindKSPD(t=1) for SRC: 796141, DEST: 192887
+  Running FindKSPD(t=1) for SRC: 407229, DEST: 78777
+  Running FindKSPD(t=1) for SRC: 962820, DEST: 934788
+  Running FindKSPD(t=1) for SRC: 303564, DEST: 239470
+  Running FindKSPD(t=1) for SRC: 455865, DEST: 378133
+  Running FindKSPD(t=1) for SRC: 947419, DEST: 735409
+  Running FindKSPD(t=1) for SRC: 246550, DEST: 208657
+  Running FindKSPD(t=1) for SRC: 238778, DEST: 1043179
+  Running FindKSPD(t=1) for SRC: 778419, DEST: 681470
+  Running FindKSPD(t=1) for SRC: 468062, DEST: 933863
+  Running FindKSPD(t=1) for SRC: 778232, DEST: 392161
+  Running FindKSPD(t=1) for SRC: 565732, DEST: 125116
+  Running FindKSPD(t=1) for SRC: 604638, DEST: 637076
+  Running FindKSPD(t=1) for SRC: 933914, DEST: 44997
+  Running FindKSPD(t=1) for SRC: 468540, DEST: 796496
+  Running FindKSPD(t=1) for SRC: 914498, DEST: 962843
+  Running FindKSPD(t=1) for SRC: 135184, DEST: 663223
+  Running FindKSPD(t=1) for SRC: 555501, DEST: 328841
+  Running FindKSPD(t=1) for SRC: 587778, DEST: 74914
+
+  -- Iterbound --
+  Running Iterbound for SRC: 752552, DEST: 721898
+  Running Iterbound for SRC: 796141, DEST: 192887
+  Running Iterbound for SRC: 407229, DEST: 78777
+  Running Iterbound for SRC: 962820, DEST: 934788
+  Running Iterbound for SRC: 303564, DEST: 239470
+  Running Iterbound for SRC: 455865, DEST: 378133
+  Running Iterbound for SRC: 947419, DEST: 735409
+  Running Iterbound for SRC: 246550, DEST: 208657
+  Running Iterbound for SRC: 238778, DEST: 1043179
+  Running Iterbound for SRC: 778419, DEST: 681470
+  Running Iterbound for SRC: 468062, DEST: 933863
+  Running Iterbound for SRC: 778232, DEST: 392161
+  Running Iterbound for SRC: 565732, DEST: 125116
+  Running Iterbound for SRC: 604638, DEST: 637076
+  Running Iterbound for SRC: 933914, DEST: 44997
+  Running Iterbound for SRC: 468540, DEST: 796496
+  Running Iterbound for SRC: 914498, DEST: 962843
+  Running Iterbound for SRC: 135184, DEST: 663223
+  Running Iterbound for SRC: 555501, DEST: 328841
+  Running Iterbound for SRC: 587778, DEST: 74914
+
+  ── Result for RoadFLA (k=30) ──
+  Algorithm          | Avg Time(s)  | Avg Paths
+  ----------------------------------------------
+  FindKSPD(t=1)      |       4,9431 |      30,00
+  Iterbound          |       5,7697 |     213,00
+
+  ── Per-pair lists for RoadFLA ──
+  RoadFLA - FindKSPD runtime = [2.0638652, 4.3164956, 10.3511195, 2.0583944, 4.7034358, 6.8618286, 2.4053096, 5.2895273, 1.7373843, 2.1998465, 7.2549397, 4.017339, 12.6076979, 12.5888126, 4.6102696, 5.1408029, 4.6078663, 3.3281637, 1.9472358, 0.7718347]
+  RoadFLA - Iterbound runtime = [1.4673186, 10.0720181]
+  RoadFLA - FindKSPD num of paths = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30]
+  RoadFLA - Iterbound num of paths = [363, 63]
+
+╔════════════════════════════════════════════════════╗
+║  Graph: WikiTalk                                   ║
+╚════════════════════════════════════════════════════╝
+Loading graph from: graph-data/WikiTalk.txt
+  ⚠ Low memory (146 MB free), skipping pair 407229 → 78777
+  ⚠ Low memory (146 MB free), skipping pair 962820 → 934788
+  ⚠ Low memory (146 MB free), skipping pair 303564 → 239470
+  ⚠ Low memory (146 MB free), skipping pair 455865 → 378133
+  ⚠ Low memory (146 MB free), skipping pair 947419 → 735409
+  ⚠ Low memory (146 MB free), skipping pair 246550 → 208657
+  ⚠ Low memory (146 MB free), skipping pair 238778 → 1043179
+  ⚠ Low memory (146 MB free), skipping pair 778419 → 681470
+  ⚠ Low memory (146 MB free), skipping pair 468062 → 933863
+  ⚠ Low memory (146 MB free), skipping pair 778232 → 392161
+  ⚠ Low memory (146 MB free), skipping pair 565732 → 125116
+  ⚠ Low memory (146 MB free), skipping pair 604638 → 637076
+  ⚠ Low memory (146 MB free), skipping pair 933914 → 44997
+  ⚠ Low memory (146 MB free), skipping pair 468540 → 796496
+  ⚠ Low memory (146 MB free), skipping pair 914498 → 962843
+  ⚠ Low memory (146 MB free), skipping pair 135184 → 663223
+  ⚠ Low memory (146 MB free), skipping pair 555501 → 328841
+  ⚠ Low memory (146 MB free), skipping pair 587778 → 74914
+  Loaded 20 pairs from graph-data/pairs/WikiTalk.pairs
+Nodes: 2394385  |  Pairs loaded: 20
+
+  -- FindKSPD (t=1.0) --
+  Running FindKSPD(t=1) for SRC: 56271, DEST: 329082
+  Running FindKSPD(t=1) for SRC: 17017, DEST: 169025
+  Running FindKSPD(t=1) for SRC: 109972, DEST: 855271
+  Running FindKSPD(t=1) for SRC: 140953, DEST: 1055017
+  Running FindKSPD(t=1) for SRC: 27733, DEST: 219350
+  Running FindKSPD(t=1) for SRC: 42307, DEST: 887799
+  Running FindKSPD(t=1) for SRC: 170072, DEST: 1412806
+  Running FindKSPD(t=1) for SRC: 134197, DEST: 1347585
+  Running FindKSPD(t=1) for SRC: 88528, DEST: 1611734
+  Running FindKSPD(t=1) for SRC: 23560, DEST: 345119
+  Running FindKSPD(t=1) for SRC: 23396, DEST: 33645
+  Running FindKSPD(t=1) for SRC: 471518, DEST: 2291419
+  Running FindKSPD(t=1) for SRC: 496426, DEST: 1117051
+  Running FindKSPD(t=1) for SRC: 289509, DEST: 1109683
+  Running FindKSPD(t=1) for SRC: 764164, DEST: 764196
+  Running FindKSPD(t=1) for SRC: 21215, DEST: 1470098
+  Running FindKSPD(t=1) for SRC: 172785, DEST: 2146925
+  Running FindKSPD(t=1) for SRC: 6534, DEST: 257993
+  Running FindKSPD(t=1) for SRC: 88666, DEST: 1017139
+  Running FindKSPD(t=1) for SRC: 741491, DEST: 43962
+
+  -- Iterbound --
+  Running Iterbound for SRC: 56271, DEST: 329082
+  Running Iterbound for SRC: 17017, DEST: 169025
+  Running Iterbound for SRC: 109972, DEST: 855271
+  Running Iterbound for SRC: 140953, DEST: 1055017
+  Running Iterbound for SRC: 27733, DEST: 219350
+  Running Iterbound for SRC: 42307, DEST: 887799
+  Running Iterbound for SRC: 170072, DEST: 1412806
+  Running Iterbound for SRC: 134197, DEST: 1347585
+  Running Iterbound for SRC: 88528, DEST: 1611734
+  Running Iterbound for SRC: 23560, DEST: 345119
+  Running Iterbound for SRC: 23396, DEST: 33645
+  Running Iterbound for SRC: 471518, DEST: 2291419
+  Running Iterbound for SRC: 496426, DEST: 1117051
+  Running Iterbound for SRC: 289509, DEST: 1109683
+  Running Iterbound for SRC: 764164, DEST: 764196
+  Running Iterbound for SRC: 21215, DEST: 1470098
+  Running Iterbound for SRC: 172785, DEST: 2146925
+  Running Iterbound for SRC: 6534, DEST: 257993
+  Running Iterbound for SRC: 88666, DEST: 1017139
+  Running Iterbound for SRC: 741491, DEST: 43962
+
+  ── Result for WikiTalk (k=30) ──
+  Algorithm          | Avg Time(s)  | Avg Paths
+  ----------------------------------------------
+  FindKSPD(t=1)      |       6,9861 |      27,10
+  Iterbound          |       6,5974 |      58,90
+
+  ── Per-pair lists for WikiTalk ──
+  WikiTalk - FindKSPD runtime = [6.1893177, 6.4587888, 7.1327062, 6.72346, 5.4838725, 7.4395256, 7.8052409, 6.2433628, 7.4494738, 6.9267642, 10.3548181, 9.3714499, 3.6378735, 9.5902318, 3.5393317, 7.4875043, 7.3336609, 6.0318303, 7.1284025, 7.3935798]
+  WikiTalk - Iterbound runtime = [5.861723, 6.0366594, 7.0217075, 7.1149716, 6.0528265, 7.4696003, 7.9567673, 6.0442782, 6.9493259, 6.5560041, 6.5630692, 6.9104701, 3.484879, 5.4832508, 3.4707354, 7.803749, 6.8428717, 7.2747406, 7.7579769, 9.2922262]
+  WikiTalk - FindKSPD num of paths = [30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 1, 30, 1, 30, 30, 30, 30, 30]
+  WikiTalk - Iterbound num of paths = [60, 62, 64, 59, 59, 60, 67, 60, 65, 75, 63, 65, 1, 69, 1, 99, 60, 62, 61, 66]
+
+
+╔══════════════════════════════════════════════════════════════╗
+║        OVERALL AVERAGE  (across 4 graphs, k=30)           ║
+╚══════════════════════════════════════════════════════════════╝
+  Algorithm          | Avg Runtime(s) | Avg Paths
+  ----------------------------------------------------
+  FindKSPD(t=1)      |         4,5614 |        26,83
+  Iterbound          |         4,7885 |        98,60
+
+Process finished with exit code 0

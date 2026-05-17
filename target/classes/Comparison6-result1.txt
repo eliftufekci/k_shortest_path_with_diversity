@@ -1,0 +1,140 @@
+"C:\Program Files\Java\jdk-17\bin\java.exe" "-javaagent:C:\Program Files\JetBrains\IntelliJ IDEA 2025.2.2\lib\idea_rt.jar=56825" -Dfile.encoding=UTF-8 -classpath C:\Users\elif4\IdeaProjects\TKSPD\target\classes org.example.Comparison6 -Xmx12g
+=== Figure 11: Vary τ (threshold) on different graphs for KSPD ===
+      FindKSPD vs FindKSPD-
+      τ ∈ {0.8, 0.6, 0.4, 0.2}, k=10, Sim1
+
+
+╔════════════════════════════════════════════════════╗
+║  Graph: web-Google                                 ║
+╚════════════════════════════════════════════════════╝
+  Loaded 17 pairs from graph-data/pairs/web-Google.pairs
+Nodes: 875713  |  Pairs loaded: 17
+
+  ── τ = 0.8, k = 10 ──
+  Running FindKSPD(τ=0.8) for SRC: 167575, DEST: 466578
+  Running FindKSPD(τ=0.8) for SRC: 457551, DEST: 123131
+  Running FindKSPD(τ=0.8) for SRC: 556092, DEST: 883196
+  Running FindKSPD(τ=0.8) for SRC: 192188, DEST: 100650
+  Running FindKSPD(τ=0.8) for SRC: 2910, DEST: 819005
+  Running FindKSPD(τ=0.8) for SRC: 813172, DEST: 276577
+  Running FindKSPD(τ=0.8) for SRC: 467421, DEST: 337875
+  Running FindKSPD(τ=0.8) for SRC: 145510, DEST: 419019
+  Running FindKSPD(τ=0.8) for SRC: 564624, DEST: 324404
+  Running FindKSPD(τ=0.8) for SRC: 168644, DEST: 488802
+  Running FindKSPD(τ=0.8) for SRC: 633820, DEST: 758940
+  Running FindKSPD(τ=0.8) for SRC: 436288, DEST: 822248
+  Running FindKSPD(τ=0.8) for SRC: 58704, DEST: 711419
+  Running FindKSPD(τ=0.8) for SRC: 318023, DEST: 751652
+  Running FindKSPD(τ=0.8) for SRC: 308412, DEST: 422235
+  Running FindKSPD(τ=0.8) for SRC: 810576, DEST: 408653
+  Running FindKSPD(τ=0.8) for SRC: 328808, DEST: 14187
+  Running FindKSPD-(τ=0.8) for SRC: 167575, DEST: 466578
+  Running FindKSPD-(τ=0.8) for SRC: 457551, DEST: 123131
+  Running FindKSPD-(τ=0.8) for SRC: 556092, DEST: 883196
+  Running FindKSPD-(τ=0.8) for SRC: 192188, DEST: 100650
+  Running FindKSPD-(τ=0.8) for SRC: 2910, DEST: 819005
+  Running FindKSPD-(τ=0.8) for SRC: 813172, DEST: 276577
+  Running FindKSPD-(τ=0.8) for SRC: 467421, DEST: 337875
+  Running FindKSPD-(τ=0.8) for SRC: 145510, DEST: 419019
+  Running FindKSPD-(τ=0.8) for SRC: 564624, DEST: 324404
+  Running FindKSPD-(τ=0.8) for SRC: 168644, DEST: 488802
+  Running FindKSPD-(τ=0.8) for SRC: 633820, DEST: 758940
+  Running FindKSPD-(τ=0.8) for SRC: 436288, DEST: 822248
+  Running FindKSPD-(τ=0.8) for SRC: 58704, DEST: 711419
+  Running FindKSPD-(τ=0.8) for SRC: 318023, DEST: 751652
+  Running FindKSPD-(τ=0.8) for SRC: 308412, DEST: 422235
+  Running FindKSPD-(τ=0.8) for SRC: 810576, DEST: 408653
+  Running FindKSPD-(τ=0.8) for SRC: 328808, DEST: 14187
+
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  INTERMEDIATE RESULTS: web-Google for τ = 0,8                              ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+  τ      | Algorithm          | Avg Time(s)    | Avg Paths
+  ------------------------------------------------------------
+  0,8    | FindKSPD           |         4,5511 |         6,71
+  0,8    | FindKSPD-          |         5,3075 |         7,76
+  ------------------------------------------------------------
+
+  ── Summary for τ=0.8 (web-Google) ──
+  τ=0.8 FindKSPD  runtime = [6.2768721, 5.2901402, 3.3858502, 5.0287949, 3.2095064, 3.4528666, 3.3272351, 5.8889291, 5.6239886, 5.6999146, 5.2275563, 4.7711554, 4.9821071, 3.449318, 3.5160159, 3.2876005, 4.9505938]
+  τ=0.8 FindKSPD- runtime = [5.5092073, 5.0435899, 3.4508964, 5.2966539, 3.6362035, 4.7935949, 4.5517943, 7.5640781, 6.556331, 7.0395012, 6.1730519, 5.8011695, 6.2139084, 4.0825175, 4.2934357, 4.2730383, 5.9478752]
+  τ=0.8 FindKSPD  paths   = [10, 10, 2, 10, 5, 1, 1, 10, 10, 10, 10, 10, 10, 2, 1, 2, 10]
+  τ=0.8 FindKSPD- paths   = [10, 10, 2, 10, 5, 1, 1, 10, 10, 11, 23, 10, 11, 2, 1, 2, 13]
+
+========================================================================
+
+  ── τ = 0.6, k = 10 ──
+  Running FindKSPD(τ=0.6) for SRC: 167575, DEST: 466578
+  Running FindKSPD(τ=0.6) for SRC: 457551, DEST: 123131
+  Running FindKSPD(τ=0.6) for SRC: 556092, DEST: 883196
+  Running FindKSPD(τ=0.6) for SRC: 192188, DEST: 100650
+  Running FindKSPD(τ=0.6) for SRC: 2910, DEST: 819005
+  Running FindKSPD(τ=0.6) for SRC: 813172, DEST: 276577
+  Running FindKSPD(τ=0.6) for SRC: 467421, DEST: 337875
+  Running FindKSPD(τ=0.6) for SRC: 145510, DEST: 419019
+  Running FindKSPD(τ=0.6) for SRC: 564624, DEST: 324404
+  Running FindKSPD(τ=0.6) for SRC: 168644, DEST: 488802
+  Running FindKSPD(τ=0.6) for SRC: 633820, DEST: 758940
+  Running FindKSPD(τ=0.6) for SRC: 436288, DEST: 822248
+  Running FindKSPD(τ=0.6) for SRC: 58704, DEST: 711419
+  Running FindKSPD(τ=0.6) for SRC: 318023, DEST: 751652
+  Running FindKSPD(τ=0.6) for SRC: 308412, DEST: 422235
+  Running FindKSPD(τ=0.6) for SRC: 810576, DEST: 408653
+  Running FindKSPD(τ=0.6) for SRC: 328808, DEST: 14187
+  Running FindKSPD-(τ=0.6) for SRC: 167575, DEST: 466578
+  Running FindKSPD-(τ=0.6) for SRC: 457551, DEST: 123131
+  Running FindKSPD-(τ=0.6) for SRC: 556092, DEST: 883196
+  Running FindKSPD-(τ=0.6) for SRC: 192188, DEST: 100650
+  Running FindKSPD-(τ=0.6) for SRC: 2910, DEST: 819005
+  Running FindKSPD-(τ=0.6) for SRC: 813172, DEST: 276577
+  Running FindKSPD-(τ=0.6) for SRC: 467421, DEST: 337875
+  Running FindKSPD-(τ=0.6) for SRC: 145510, DEST: 419019
+  Running FindKSPD-(τ=0.6) for SRC: 564624, DEST: 324404
+  Running FindKSPD-(τ=0.6) for SRC: 168644, DEST: 488802
+  Running FindKSPD-(τ=0.6) for SRC: 633820, DEST: 758940
+  Running FindKSPD-(τ=0.6) for SRC: 436288, DEST: 822248
+  Running FindKSPD-(τ=0.6) for SRC: 58704, DEST: 711419
+  Running FindKSPD-(τ=0.6) for SRC: 318023, DEST: 751652
+  Running FindKSPD-(τ=0.6) for SRC: 308412, DEST: 422235
+  Running FindKSPD-(τ=0.6) for SRC: 810576, DEST: 408653
+  Running FindKSPD-(τ=0.6) for SRC: 328808, DEST: 14187
+
+  ╔══════════════════════════════════════════════════════════════════════╗
+  ║  INTERMEDIATE RESULTS: web-Google for τ = 0,6                              ║
+  ╚══════════════════════════════════════════════════════════════════════╝
+  τ      | Algorithm          | Avg Time(s)    | Avg Paths
+  ------------------------------------------------------------
+  0,6    | FindKSPD           |         5,5395 |        52,06
+  0,6    | FindKSPD-          |         5,9001 |       123,82
+  ------------------------------------------------------------
+
+  ── Summary for τ=0.6 (web-Google) ──
+  τ=0.6 FindKSPD  runtime = [6.4929526, 6.2377631, 3.9792882, 5.9660164, 4.1451131, 4.1583552, 4.1410245, 7.2311997, 6.8556748, 7.0088732, 6.0845054, 6.038358, 7.5870416, 3.3808899, 4.353001, 4.1964386, 6.3146989]
+  τ=0.6 FindKSPD- runtime = [6.7973256, 8.4778346, 3.8266272, 6.4749604, 4.2170339, 4.0005542, 4.3057615, 8.6071262, 6.8984461, 7.061497, 6.1773809, 6.457209, 8.4009882, 3.6473465, 4.0395315, 4.1396742, 6.7720176]
+  τ=0.6 FindKSPD  paths   = [33, 148, 2, 48, 5, 1, 1, 67, 67, 40, 16, 18, 409, 2, 1, 2, 25]
+  τ=0.6 FindKSPD- paths   = [49, 413, 2, 165, 5, 1, 1, 213, 388, 114, 30, 18, 642, 2, 1, 2, 59]
+
+========================================================================
+
+  ── τ = 0.4, k = 10 ──
+  Running FindKSPD(τ=0.4) for SRC: 167575, DEST: 466578
+  Running FindKSPD(τ=0.4) for SRC: 457551, DEST: 123131
+  Running FindKSPD(τ=0.4) for SRC: 556092, DEST: 883196
+  Running FindKSPD(τ=0.4) for SRC: 192188, DEST: 100650
+  Running FindKSPD(τ=0.4) for SRC: 2910, DEST: 819005
+  Running FindKSPD(τ=0.4) for SRC: 813172, DEST: 276577
+  Running FindKSPD(τ=0.4) for SRC: 467421, DEST: 337875
+  Running FindKSPD(τ=0.4) for SRC: 145510, DEST: 419019
+  Running FindKSPD(τ=0.4) for SRC: 564624, DEST: 324404
+  Running FindKSPD(τ=0.4) for SRC: 168644, DEST: 488802
+  Running FindKSPD(τ=0.4) for SRC: 633820, DEST: 758940
+  Running FindKSPD(τ=0.4) for SRC: 436288, DEST: 822248
+  Running FindKSPD(τ=0.4) for SRC: 58704, DEST: 711419
+  Running FindKSPD(τ=0.4) for SRC: 318023, DEST: 751652
+  Running FindKSPD(τ=0.4) for SRC: 308412, DEST: 422235
+  Running FindKSPD(τ=0.4) for SRC: 810576, DEST: 408653
+  Running FindKSPD(τ=0.4) for SRC: 328808, DEST: 14187
+  Running FindKSPD-(τ=0.4) for SRC: 167575, DEST: 466578
+  Running FindKSPD-(τ=0.4) for SRC: 457551, DEST: 123131
+  Running FindKSPD-(τ=0.4) for SRC: 556092, DEST: 883196
+  Running FindKSPD-(τ=0.4) for SRC: 192188, DEST: 100650
