@@ -1,9 +1,9 @@
 # K-Shortest Path with Diversity (KSPD) Implementation
 
 This repository contains a Java implementation of the algorithms proposed in the research paper:
-**"Efficient Top-k Shortest-Path Distance Queries on Large Networks by Pruning Candidate Paths"**  
+**"Finding Top-k Shortest Paths with Diversity"**  
 *Published in IEEE Transactions on Knowledge and Data Engineering (TKDE), 2017.*  
-Authors: Bahety Yang, et al.  
+Authors: Huiping Liu, Cheqing Jin, Bin Yang, Aoying Zhou  
 [Link to Paper](https://homes.cs.aau.dk/~byang/papers/TKDE2017.pdf)
 
 ## Overview
