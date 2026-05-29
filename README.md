@@ -72,10 +72,14 @@ Each experiment class will output a formatted table to the console showing:
 
 If you use this code in your research, please cite the original paper:
 ```bibtex
-@article{yang2017efficient,
-  title={Efficient Top-k Shortest-Path Distance Queries on Large Networks by Pruning Candidate Paths},
-  author={Yang, Bahety and others},
-  journal={IEEE Transactions on Knowledge and Data Engineering},
-  year={2017}
-}
+@ARTICLE{8107512,
+  author={Liu, Huiping and Jin, Cheqing and Yang, Bin and Zhou, Aoying},
+  journal={IEEE Transactions on Knowledge and Data Engineering}, 
+  title={Finding Top-k Shortest Paths with Diversity}, 
+  year={2018},
+  volume={30},
+  number={3},
+  pages={488-502},
+  keywords={Measurement;Robot motion;Planning;Wireless sensor networks;Computer science;Complexity theory;Vehicle routing;Top- $k$     shortest paths;diversified top- $k$     query;path finding;path similarity;path diversity},
+  doi={10.1109/TKDE.2017.2773492}}
 ```
